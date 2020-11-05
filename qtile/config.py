@@ -117,9 +117,15 @@ screens = [
         Screen(
                 top=bar.Bar(
                         [
-                                widget.CurrentLayout(),
-                                widget.GroupBox(),
+                                widget.CurrentLayout(foreground="#dde7c7"),
+                                widget.GroupBox(
+                                        active="#80b918",
+                                        block_highlight_text_color="#eeef20",
+                                        borderwidth=0,
+                                        disable_drag=True
+                                        ),
                                 widget.Prompt(),
+                                widget.Pomodoro(),
                                 widget.Spacer(),
                                 widget.Chord(
                                         chords_colors={
@@ -128,11 +134,31 @@ screens = [
                                         name_transform=lambda name: name.upper(),
                                 ),
                                 widget.CPU(
-                                        format=("' {freq_current}GHz {load_percent}%'")
+                                        format=("' {freq_current}GHz {load_percent}%'"),
+                                        foreground="#00b2ca"
                                         ),
                                 widget.Sep(),
-                                widget.TextBox(font="fontawesome", text=""),
-                                widget.GenPollText(func=getCPUTemp, update_interval=5),
+                                widget.Memory(
+                                        foreground="#da2c38",
+                                        format=" {MemUsed}M  {SwapUsed}M"
+                                        ),
+                                widget.Sep(),
+                                widget.DF(
+                                        visible_on_warn=False,
+                                        format=" {p} {uf}{m} FREE",
+                                        foreground='#0EAD69'
+                                        ),
+                                widget.Sep(),
+                                widget.TextBox(
+                                        font="fontawesome",
+                                        text="",
+                                        foreground="#ee4266"
+                                        ),
+                                widget.GenPollText(
+                                        func=getCPUTemp,
+                                        update_interval=5,
+                                        foreground="#ee4266"
+                                        ),
                                 widget.Sep(),
                                 widget.Battery(
                                         full_char="",
@@ -140,19 +166,43 @@ screens = [
                                         charge_char=" ",
                                         discharge_char=" ",
                                         format='{char} {percent:2.0%} {hour:d}:{min:02d}',
-                                        show_short_text=False
+                                        show_short_text=False,
+                                        foreground="#ffd23f"
                                         ),
                                 widget.Sep(),
-                                widget.TextBox(font="fontawesome", text=""),
-                                widget.Volume()
+                                widget.TextBox(
+                                        font="fontawesome",
+                                        text="",
+                                        foreground="#3bceac"
+                                        ),
+                                widget.Volume(
+                                        foreground="#3bceac"
+                                        )
                         ],
                         25,
                 ),
                 bottom=bar.Bar(
                         [
                                 widget.TaskList(),
+                                widget.Net(
+                                        format=' {down}  {up}',
+                                        foreground="#87c38f"
+                                        ),
+                                widget.Sep(),
+                                widget.Wlan(
+                                        interface="wlp3s0",
+                                        format=" {essid} {percent:2.0%}",
+                                        foreground="#1c7293"
+                                        ),
+                                widget.Sep(),
+                                widget.CheckUpdates(
+                                        colour_have_updates="#7dcfb6",
+                                        colour_no_updates="#fbd1a2"
+                                        ),
+                                widget.Sep(),
                                 widget.Clock(
-                                        format=" %H:%M   %a %d-%m-%y"
+                                        format=" %H:%M   %a %d-%m-%y",
+                                        foreground="#f79256"
                                 ),
                                 widget.Systray()
                         ],
