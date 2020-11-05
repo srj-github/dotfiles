@@ -16,7 +16,7 @@ fi
 [[ $- != *i* ]] && return
 
 # Only load Liquid Prompt in interactive shells, not from a script or from scp
-[[ $- = *i* ]] && source ~/bin/liquidprompt/liquidprompt
+[[ $- = *i* ]] && source ~/.dotfiles/bash/liquidprompt/liquidprompt
 
 export PATH="$HOME/bin:$PATH"
 
