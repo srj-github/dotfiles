@@ -7,3 +7,6 @@
 # . . . . . . . . . . . . . . . . . . . . .
 
 alias ls='ls --color=auto'
+alias shutdown='shutdown -h now'
+alias restart='shutdown -r now'
+alias vpn='sudo openvpn --config ~/.dotconfig/vpn.ovpn'
