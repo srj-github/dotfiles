@@ -1,3 +1,6 @@
-[submodule "bash/liquidprompt"]
-	path = bash/liquidprompt
+[submodule "02_submodules/doom-emacs"]
+	path = 02_submodules/doom-emacs
+	url = https://github.com/hlissner/doom-emacs
+[submodule "02_submodules/liquidprompt"]
+	path = 02_submodules/liquidprompt
 	url = https://github.com/nojhan/liquidprompt

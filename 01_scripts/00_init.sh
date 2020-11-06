@@ -8,11 +8,14 @@
 # . . . . . . . . . . . . . . . . . . . . .
 set -euo pipefail
 
+# Clone dotfiles folder
+git clone --recurse-submodules --remote-submodules https://github.com/srj-github/dotfiles ~/.dotfiles
+
 # Install required packages
-grep -v "^#" requirements.txt  | sudo pacman -S --needed -
+grep -v "^#" requirements.txt | sudo pacman -S --needed -
 
 # Install Doom Emacs
-git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+cp -r ~/.dotfiles/02_submodules/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom install
 
 # Make symbolic links for each configuration file
