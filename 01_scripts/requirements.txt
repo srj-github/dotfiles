@@ -1,0 +1,19 @@
+git
+# For Doom Emacs
+fd
+ripgrep
+emacs
+
+qtile
+feh
+alacritty
+thunderbird
+qbittorrent
+# For the vpn alias:
+openvpn
+# For the Memory and Net widgets in qTile:
+python-psutil
+# For the Wlan widget in qTile:
+python-iwlib
+# For my custom function to get CPU temp:
+lm_sensors
