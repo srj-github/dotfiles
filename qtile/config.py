@@ -134,7 +134,7 @@ screens = [
                                         name_transform=lambda name: name.upper(),
                                 ),
                                 widget.CPU(
-                                        format=("' {freq_current}GHz {load_percent}%'"),
+                                        format=(" {freq_current}GHz {load_percent}%"),
                                         foreground="#00b2ca"
                                         ),
                                 widget.Sep(),

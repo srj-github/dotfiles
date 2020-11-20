@@ -4,9 +4,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(eldoc-idle-delay 5)
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/org/acn.org" "~/Dropbox/org/personal.org" "~/Dropbox/org/contacts.org")))
  '(package-selected-packages (quote (evil-multiedit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

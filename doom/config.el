@@ -30,7 +30,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/org/")
+(setq org-directory "~/org/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -72,8 +72,6 @@
 
 (+global-word-wrap-mode +1)
 
-(require 'git-commit)
-
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
 (defun my-signature()
@@ -87,4 +85,6 @@
 (add-hook 'window-setup-hook #'toggle-frame-maximized)
 
 ;; set my org agenda files
-(setq org-agenda-files (list "~/Dropbox/org/*.org"))
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+
+(add-hook 'after-init-hook 'org-agenda-list)
