@@ -14,10 +14,6 @@ git clone --recurse-submodules --remote-submodules https://github.com/srj-github
 # Install required packages
 grep -v "^#" requirements.txt | sudo pacman -S --needed -
 
-# Install Doom Emacs
-cp -r ~/.dotfiles/02_submodules/doom-emacs ~/.emacs.d
-~/.emacs.d/bin/doom install
-
 # Make symbolic links for each configuration file
 # bash
 ln -svf ~/.dotfiles/bash/bashrc ~/.bashrc
@@ -30,8 +26,12 @@ ln -svf ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
 # qTile
 ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
 
-# Doom Emacs
-ln -svf ~/.dotfiles/doom/* ~/.doom.d/
+# Emacs
+ln -svf ~/.dotfiles/emacs/init.el ~/.config/emacs/init.el
 
 # Copy required fonts
 cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
+
+# Copy emacs theme
+cp -r ~/.dotfiles/00_assets/themes ~/.config/emacs/
+cp ~/.dotfiles/00_assets/signature ~/.config/emacs/

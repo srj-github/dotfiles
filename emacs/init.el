@@ -1,3 +1,11 @@
+;;  ____
+;; |_  /_ _ __ _
+;;  / /| '_/ _` |
+;; /___|_| \__, |
+;;         |___/
+;; . Emacs Configuration file
+;; . . . . . . . . . . . . . . . . . . . . .
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -8,6 +16,12 @@
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
 
+;; just a function to display my ASCII art signature
+(global-set-key (kbd "<f5>") 'my-signature)
+(defun my-signature()
+  (interactive)
+  (insert-file-contents "~/.config/emacs/signature"))
+
 ;; Display line-numbers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
@@ -15,6 +29,7 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit) ;; Use <esc> to escape
 (global-set-key (kbd "C-<tab>") 'other-window)
+(global-set-key (kbd "<f12>") 'org-agenda)
 
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
@@ -37,6 +52,11 @@
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
+
+;; ORG-mode
+
+(setq org-directory "~/org/")
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 
 ;; MELPA initialization
 (require 'package)
@@ -138,3 +158,12 @@
 	   (doom-modeline-enable-word-count t))
   :init (doom-modeline-mode 1))
 
+(use-package dashboard
+  :custom ((dashboard-center-content t)
+	   (dashboard-set-heading-icons t)
+	   (dashboard-set-file-icons t)
+	   (dashboard-items '((bookmarks . 10)
+			      (agenda . 20)))
+	   (dashboard-week-agenda t))
+  :config
+  (dashboard-setup-startup-hook))
