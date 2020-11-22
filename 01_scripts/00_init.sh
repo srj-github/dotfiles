@@ -35,6 +35,13 @@ sudo cp -r ~/.dotfiles/02_submodules/aerial-sddm-theme /usr/share/sddm/themes/
 sudo mkdir /etc/sddm.conf.d
 sudo ln -sf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
 
+# smartd
+sudo ln -sy ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
+
+# beets
+
+ln -sy ~/.dotfiles/beets/config.yaml ~/.config/beets/config.yaml
+
 # Copy required fonts
 cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
 
