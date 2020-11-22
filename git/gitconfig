@@ -1,0 +1,12 @@
+[user]
+	email = srj.elmi@gmail.com
+	name = Sergiu Elmi
+[credential]
+	helper = cache
+[core]
+	editor = emacs
+	autocrlf = input
+	excludesfile = /home/zrg/.gitignore
+[alias]
+	s = status -s
+	l = log --oneline --all --graph

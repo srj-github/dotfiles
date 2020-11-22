@@ -33,14 +33,19 @@ ln -svf ~/.dotfiles/emacs/init.el ~/.config/emacs/init.el
 sudo systemctl enable sddm
 sudo cp -r ~/.dotfiles/02_submodules/aerial-sddm-theme /usr/share/sddm/themes/
 sudo mkdir /etc/sddm.conf.d
-sudo ln -sf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
+sudo ln -svf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
 
 # smartd
-sudo ln -sy ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
+sudo ln -svf ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
 
 # beets
 
-ln -sy ~/.dotfiles/beets/config.yaml ~/.config/beets/config.yaml
+ln -svf ~/.dotfiles/beets/config.yaml ~/.config/beets/config.yaml
+
+# git
+
+ln -svf ~/.dotfiles/git/gitconfig ~/.gitconfig
+ln -svf ~/.dotfiles/git/gitignore ~/.gitignore
 
 # Copy required fonts
 cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
