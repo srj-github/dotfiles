@@ -4,6 +4,7 @@ ripgrep
 emacs
 qtile
 feh
+vlc
 alacritty
 thunderbird
 qbittorrent
@@ -18,3 +19,6 @@ lm_sensors
 sddm
 xsecurelock
 swaks
+beets
+rsync
+smartmontools
