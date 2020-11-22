@@ -17,3 +17,4 @@ python-iwlib
 lm_sensors
 sddm
 xsecurelock
+swaks
