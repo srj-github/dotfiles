@@ -15,7 +15,6 @@
 (set-face-attribute 'default nil :font "Envy Code R" :height 130)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
-
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
 (defun my-signature()
@@ -25,11 +24,12 @@
 ;; Display line-numbers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
+(scroll-bar-mode -1)
 ;;; Key-bindings
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit) ;; Use <esc> to escape
 (global-set-key (kbd "C-<tab>") 'other-window)
 (global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "<f6>") 'dashboard-refresh-buffer)
 
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
@@ -95,6 +95,8 @@
 	 ("C-r" . swiper)))
 
 (use-package evil
+  :defer nil
+  :bind ([remap evil-paste-pop] . counsel-yank-pop)
   :init
   (setq evil-want-keybinding nil)
   (setq evil-want-integration t)
@@ -160,6 +162,7 @@
 
 (use-package dashboard
   :custom ((dashboard-center-content t)
+	   (dashboard-startup-banner "~/.config/emacs/logo.png")
 	   (dashboard-set-heading-icons t)
 	   (dashboard-set-file-icons t)
 	   (dashboard-items '((bookmarks . 10)
@@ -167,3 +170,12 @@
 	   (dashboard-week-agenda t))
   :config
   (dashboard-setup-startup-hook))
+
+(use-package beacon
+  :config (beacon-mode 1))
+
+(use-package goto-line-preview
+  :bind ("C-l" . goto-line-preview))
+
+(use-package which-key
+  :config (which-key-mode 1))
