@@ -1,0 +1,22 @@
+directory: /media/zrg/d/mp3
+
+plugins: fetchart scrub lyrics
+import:
+    write: yes
+    copy: yes
+    resume: no
+    autotag: yes
+
+art_filename: cover
+
+paths:
+    default: $albumartist/($year) - $album/$track $title
+    comp: 001 - Compilations/$album/$track $title
+
+lyrics:
+    auto: no 
+
+fetchart:
+    cautious: true
+    cover_names: front back
+    sources: itunes *
