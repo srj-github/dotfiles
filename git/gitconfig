@@ -6,7 +6,7 @@
 [core]
 	editor = emacs
 	autocrlf = input
-	excludesfile = /home/zrg/.gitignore
+	excludesfile = ~/.gitignore
 [alias]
 	s = status -s
 	l = log --oneline --all --graph
