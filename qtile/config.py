@@ -25,24 +25,19 @@ commands = {
 
 keys = [
     Key([mod], 'l', lazy.spawn(commands["lock"])),
+
     # Switch between windows in current stack pane
     Key([mod], "k", lazy.layout.down(),
-        desc="Move focus down in stack pane"),
     Key([mod], "j", lazy.layout.up(),
-        desc="Move focus up in stack pane"),
 
     # Move windows up or down in current stack
     Key([mod, "control"], "k", lazy.layout.shuffle_down(),
-        desc="Move window down in current stack "),
     Key([mod, "control"], "j", lazy.layout.shuffle_up(),
-        desc="Move window up in current stack "),
 
     # Switch window focus to other pane(s) of stack
     Key([mod], "Tab", lazy.layout.down(),
-        desc="Switch window focus to other pane(s) of stack"),
 
     Key([mod], "t", lazy.window.toggle_floating(),
-        desc="Switch window to and from floating"),
 
     # Swap panes of split stack
     Key([mod, "shift"], "space", lazy.layout.rotate(),
@@ -53,7 +48,7 @@ keys = [
         # Unsplit = 1 window displayed, like Max layout, but still with
         # multiple stack panes
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
-        desc="Toggle between split and unsplit sides of stack"),
+
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
@@ -63,7 +58,6 @@ keys = [
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
     Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
 ]
 
 groups = [
