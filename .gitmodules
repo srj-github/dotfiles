@@ -4,3 +4,6 @@
 [submodule "02_submodules/liquidprompt"]
 	path = 02_submodules/liquidprompt
 	url = https://github.com/nojhan/liquidprompt
+[submodule "02_submodules/aerial-sddm-theme"]
+	path = 02_submodules/aerial-sddm-theme
+	url = https://github.com/3ximus/aerial-sddm-theme

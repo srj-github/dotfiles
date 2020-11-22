@@ -29,9 +29,17 @@ ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
 # Emacs
 ln -svf ~/.dotfiles/emacs/init.el ~/.config/emacs/init.el
 
+# sddm
+sudo systemctl enable sddm
+sudo cp -r ~/.dotfiles/02_submodules/aerial-sddm-theme /usr/share/sddm/themes/
+sudo mkdir /etc/sddm.conf.d
+sudo ln -sf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
+
 # Copy required fonts
 cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
 
-# Copy emacs theme
+# Copy emacs assets
 cp -r ~/.dotfiles/00_assets/themes ~/.config/emacs/
 cp ~/.dotfiles/00_assets/signature ~/.config/emacs/
+
+

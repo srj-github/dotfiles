@@ -1,8 +1,9 @@
 ;;  ____
 ;; |_  /_ _ __ _
-;;  / /| '_/ _` |
-;; /___|_| \__, |
+;;  / /| '_/ _` |   Sergiu Elmi
+;; /___|_| \__, |   srj.elmi@gmail.com
 ;;         |___/
+;;
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
@@ -23,6 +24,7 @@
 
 ;; Display line-numbers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
 
 (scroll-bar-mode -1)
 ;;; Key-bindings
@@ -47,6 +49,14 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; Scroll one line at a time (less "jumpy" than defaults)
+
+;; Tab Indent to 4 spaces in python
+
+(add-hook 'python-mode-hook
+      (lambda ()
+        (setq indent-tabs-mode t)
+        (setq tab-width 4)
+        (setq python-indent-offset 4)))
    
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -88,6 +98,9 @@
   (ivy-count-format "%d/%d")
   (ivy-use-virtual-buffers t)
   :config (ivy-mode 1))
+
+(use-package ivy-rich
+  :init (ivy-rich-mode 1))
 
 (use-package swiper
   :after ivy
@@ -179,3 +192,8 @@
 
 (use-package which-key
   :config (which-key-mode 1))
+
+(use-package helpful
+  :custom (counsel-describe-function-function #'helpful-callable)
+          (counsel-describe-variable-function #'helpful-variable)
+  :bind   ([remap describe-key] . helpful-key))

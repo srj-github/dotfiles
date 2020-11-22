@@ -1,9 +1,7 @@
 git
-# For Doom Emacs
 fd
 ripgrep
 emacs
-
 qtile
 feh
 alacritty
@@ -17,3 +15,5 @@ python-psutil
 python-iwlib
 # For my custom function to get CPU temp:
 lm_sensors
+sddm
+xsecurelock
