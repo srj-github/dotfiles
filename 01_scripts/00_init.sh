@@ -8,11 +8,11 @@
 # . . . . . . . . . . . . . . . . . . . . .
 set -euo pipefail
 
-# Clone dotfiles folder
-git clone --recurse-submodules --remote-submodules https://github.com/srj-github/dotfiles ~/.dotfiles
-
 # Install required packages
 grep -v "^#" requirements.txt | sudo pacman -S --needed -
+
+# Clone dotfiles folder
+git clone --recurse-submodules --remote-submodules https://github.com/srj-github/dotfiles ~/.dotfiles
 
 # Make symbolic links for each configuration file
 # bash
@@ -39,11 +39,9 @@ sudo ln -svf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
 sudo ln -svf ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
 
 # beets
-
 ln -svf ~/.dotfiles/beets/config.yaml ~/.config/beets/config.yaml
 
 # git
-
 ln -svf ~/.dotfiles/git/gitconfig ~/.gitconfig
 ln -svf ~/.dotfiles/git/gitignore ~/.gitignore
 
@@ -53,5 +51,3 @@ cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
 # Copy emacs assets
 cp -r ~/.dotfiles/00_assets/themes ~/.config/emacs/
 cp ~/.dotfiles/00_assets/signature ~/.config/emacs/
-
-

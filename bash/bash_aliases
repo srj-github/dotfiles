@@ -3,10 +3,15 @@
 #  / /| '_/ _` |
 # /___|_| \__, |
 #         |___/
-# . bash_aliases for .bvashrc
+# . bash_aliases for .bashrc
 # . . . . . . . . . . . . . . . . . . . . .
 
 alias ls='ls --color=auto'
+alias sudo='sudo '
+
 alias shutdown='shutdown -h now'
 alias restart='shutdown -r now'
+
 alias vpn='sudo openvpn --config ~/.private/vpn.ovpn'
+
+alias fs='du -hd1 | sort -h'

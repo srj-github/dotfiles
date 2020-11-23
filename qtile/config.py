@@ -20,8 +20,21 @@ mod = "mod4"
 terminal = guess_terminal()
 
 commands = {
-    "lock": "xsecurelock"
+    "lock": "xsecurelock",
 }
+
+
+def wallpaper():
+    path = "/home/zrg/Documents/wallpapers"
+    subprocess.run(['feh', '--bg-fill', '--randomize', path], check=True)
+
+
+def getCPUTemp():
+    sensors = subprocess.run('sensors', capture_output=True)
+    currentTemp = re.search(r'(?<=Packageid0:\+)\d\d.\d.', str(sensors).replace(" ", "")).group(0)
+
+    return currentTemp
+
 
 keys = [
     Key([mod], 'l', lazy.spawn(commands["lock"])),
@@ -44,9 +57,9 @@ keys = [
         desc="Swap panes of split stack"),
 
     # Toggle between split and unsplit sides of stack.
-        # Split = all windows displayed
-        # Unsplit = 1 window displayed, like Max layout, but still with
-        # multiple stack panes
+    # Split = all windows displayed
+    # Unsplit = 1 window displayed, like Max layout, but still with
+    # multiple stack panes
     Key([mod, "shift"], "Return", lazy.layout.toggle_split()),
 
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
@@ -61,20 +74,20 @@ keys = [
 ]
 
 groups = [
-        Group(name="1", layout="stack", label="main(1)"),
-        Group(name="2", spawn="emacs", layout="monadwide", label="code(2)", init=True),
-        Group(name="3", spawn="alacritty", layout="verticaltile", label="terminals(3)", init=True),
-        Group(name="m", spawn="thunderbird", label="mail(m)", init=True),
-        Group(name="0", spawn="qbittorrent", label="torrent(0)", init=True)
+    Group(name="1", layout="stack", label="main(1)"),
+    Group(name="2", spawn="emacs", layout="monadwide", label="code(2)", init=True),
+    Group(name="3", spawn="alacritty", layout="verticaltile", label="terminals(3)", init=True),
+    Group(name="m", spawn="thunderbird", label="mail(m)", init=True),
+    Group(name="0", spawn="qbittorrent", label="torrent(0)", init=True)
 ]
 
 for i in groups:
-        keys.append(
-                Key([mod, 'shift'], i.name, lazy.window.togroup(i.name))
-        )
-        keys.append(
-                Key([mod], i.name, lazy.group[i.name].toscreen())
-        )
+    keys.append(
+        Key([mod, 'shift'], i.name, lazy.window.togroup(i.name))
+    )
+    keys.append(
+        Key([mod], i.name, lazy.group[i.name].toscreen())
+    )
 
 layouts = [
     # layout.Max(),
@@ -91,18 +104,6 @@ layouts = [
     layout.VerticalTile(margin = 5),
     # layout.Zoomy(),
 ]
-
-
-def wallpaper():
-        path = "/home/zrg/Documents/wallpapers"
-        #subprocess.run(f'feh --bg-fill --randomize {path}', shell=True)
-        subprocess.run(['feh', '--bg-fill', '--randomize', path])
-
-def getCPUTemp():
-        sensors = subprocess.run('sensors', capture_output=True)
-        currentTemp = re.search(r'(?<=Packageid0:\+)\d\d.\d.', str(sensors).replace(" ", "")).group(0)
-
-        return currentTemp
 
 widget_defaults = dict(
     font='Prime',
@@ -256,6 +257,7 @@ wmname = "LG3D"
 
 # Hooks
 
-@hook.subscribe.startup
+@hook.subscribe.startup_once
 def autostart():
     wallpaper()
+    subprocess.run("flameshot &", shell=True, check=True)

@@ -4,7 +4,6 @@ ripgrep
 emacs
 qtile
 feh
-vlc
 alacritty
 thunderbird
 qbittorrent
@@ -20,5 +19,27 @@ sddm
 xsecurelock
 swaks
 beets
+# Required by beets:
+webkit2gkt
+kakasi
+python-pyinotify
+python-musicbrainzngs
+libbs2b
+chromaprint
+gst-plugins-bad
 rsync
 smartmontools
+flameshot
+# 
+# Not required by the scripts, just a list with software I want to have it installed 
+vlc
+docker
+keepassxc
+gimp
+inkscape
+libreoffice
+filezilla
+htop
+vim
+vifm
+nomachine
