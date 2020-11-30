@@ -12,6 +12,7 @@
 (tool-bar-mode -1)
 (set-fringe-mode 10)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Envy Code R" :height 130)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
@@ -26,7 +27,7 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'column-number-mode)
 
-(scroll-bar-mode -1)
+
 ;;; Key-bindings
 
 (global-set-key (kbd "C-<tab>") 'other-window)
@@ -48,7 +49,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Scroll one line at a time (less "jumpy" than defaults)
 
 ;; Tab Indent to 4 spaces in python
 
@@ -57,10 +57,14 @@
         (setq tab-width 4)
         (setq python-indent-offset 4)))
    
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
+;; Scroll one line at a time (less "jumpy" than defaults)
+(setq scroll-margin 1
+  scroll-step 1
+  mouse-wheel-scroll-amount '(1 ((shift) . 1))
+  mouse-wheel-progressive-speed nil
+  mouse-wheel-follow-mouse 't
+  scroll-conservatively 10000
+  scroll-preserve-screen-position 1)
 
 ;; ORG-mode
 
@@ -155,6 +159,11 @@
     :hook (js2-mode . lsp-deferred) 
     :commands (lsp lsp-deferred))
 
+(use-package lsp-ui
+  :custom lsp-ui-sideline-show-hover t
+	  lsp-ui-sideline-show-diagnostics t
+          lsp-ui-sideline-show-code-actions t)
+
 (use-package highlight-indent-guides
   :diminish
   :config (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
@@ -178,7 +187,8 @@
 	   (dashboard-set-heading-icons t)
 	   (dashboard-set-file-icons t)
 	   (dashboard-items '((bookmarks . 10)
-			      (agenda . 20)))
+			      (agenda . 20)
+			      (recents . 10)))
 	   (dashboard-week-agenda t))
   :config
   (dashboard-setup-startup-hook))
@@ -196,3 +206,6 @@
   :custom (counsel-describe-function-function #'helpful-callable)
           (counsel-describe-variable-function #'helpful-variable)
   :bind   ([remap describe-key] . helpful-key))
+
+(use-package yascroll
+  :config (global-yascroll-bar-mode 1))
