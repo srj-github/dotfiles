@@ -37,7 +37,7 @@ colors:
 # Font configuration (changes require restart)
 font:
   # The size to use.
-  size: 8
+  size: 10
   # The normal (roman) font face to use.
   normal:
     family: Source Code Pro
