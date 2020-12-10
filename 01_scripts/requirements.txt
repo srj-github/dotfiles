@@ -31,6 +31,7 @@ rsync
 smartmontools
 flameshot
 exa
+progress
 # 
 # Not required by the scripts, just a list with software I want to have it installed 
 vlc

@@ -14,10 +14,9 @@ from typing import List  # noqa: F401
 from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
 
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "alacritty"
 
 commands = {
     "lock": "xsecurelock",
@@ -37,7 +36,12 @@ def getCPUTemp():
 
 
 keys = [
-    Key([mod], 'l', lazy.spawn(commands["lock"])),
+    Key([mod], 'l', lazy.spawn(commands["lock"])),  # lock screen with securelock
+
+    Key([mod], "r",
+        lazy.spawn("dmenu_run -p 'Run: '"),
+        desc='Dmenu Run Launcher'
+        ),
 
     # Switch between windows in current stack pane
     Key([mod], "k", lazy.layout.down()),
@@ -70,15 +74,19 @@ keys = [
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown qtile"),
-    Key([mod], "r", lazy.spawncmd()),
+
+
+    Key([mod], "o", lazy.layout.grow()),
+    Key([mod], "i", lazy.layout.shrink()),
+    Key([mod], "p", lazy.layout.maximize())
 ]
 
 groups = [
-    Group(name="1", layout="stack", label="main(1)"),
-    Group(name="2", spawn="emacs", layout="monadwide", label="code(2)", init=True),
-    Group(name="3", spawn="alacritty", layout="verticaltile", label="terminals(3)", init=True),
-    Group(name="m", spawn="thunderbird", label="mail(m)", init=True),
-    Group(name="0", spawn="qbittorrent", label="torrent(0)", init=True)
+    Group(name="1", layout="monadtall", label=" main(1)", layouts=[layout.MonadTall(margin=5), layout.Stack(num_stacks=1, margin=5, border_width=0)]),
+    Group(name="2", spawn="emacs", layout="monadwide", label=" code(2)", init=True),
+    Group(name="3", spawn="alacritty", layout="verticaltile", label=" terminals(3)", init=True),
+    Group(name="m", spawn="thunderbird", label=" mail(m)", init=True),
+    Group(name="0", spawn="qbittorrent", label=" torrent(0)", init=True)
 ]
 
 for i in groups:
@@ -92,21 +100,22 @@ for i in groups:
 layouts = [
     # layout.Max(),
     layout.Stack(num_stacks=1, margin=5, border_width=0),
+    layout.Floating(),
     # Try more layouts by unleashing below layouts.
     # layout.Bsp(),
     # layout.Columns(),
     # layout.Matrix(),
     layout.MonadTall(margin=5),
-    layout.MonadWide(margin = 5),
+    layout.MonadWide(margin=5),
     # layout.RatioTile(),
     # layout.Tile(),
-    #layout.TreeTab(),
-    layout.VerticalTile(margin = 5),
+    # layout.TreeTab(),
+    layout.VerticalTile(margin=5),
     # layout.Zoomy(),
 ]
 
 widget_defaults = dict(
-    font='Prime',
+    font='Cantarell',
     fontsize=15,
     padding=3,
 )
@@ -124,7 +133,6 @@ screens = [
                                         disable_drag=True
                                         ),
                                 widget.Prompt(),
-                                widget.Pomodoro(),
                                 widget.Spacer(),
                                 widget.Chord(
                                         chords_colors={
