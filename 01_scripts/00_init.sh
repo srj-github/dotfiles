@@ -56,5 +56,6 @@ cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
 
 # Copy emacs assets
 mkdir -p ~/.config/emacs
+touch ~/.config/emacs/custom.el
 cp -r ~/.dotfiles/00_assets/themes ~/.config/emacs/
 cp ~/.dotfiles/00_assets/signature ~/.config/emacs/

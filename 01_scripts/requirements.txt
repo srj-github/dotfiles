@@ -28,6 +28,7 @@ phonon-qt5-gstreaner
 # end
 xsecurelock
 swaks
+npm
 beets
 # Required by beets:
 webkit2gtk
@@ -37,6 +38,7 @@ python-musicbrainzngs
 libbs2b
 chromaprint
 gst-plugins-bad
+unzip
 # end
 rsync
 smartmontools
