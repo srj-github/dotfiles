@@ -84,6 +84,10 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(use-package exec-path-from-shell
+  :config (when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize)))
+
 (use-package diminish)
 
 (use-package gruvbox-theme
