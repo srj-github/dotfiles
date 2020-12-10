@@ -21,24 +21,29 @@ ln -svf ~/.dotfiles/bash/bash_aliases ~/.bash_aliases
 ln -svf ~/.dotfiles/bash/inputrc ~/.inputrc
 
 # alacritty
+mkdir -p ~/.config/alacritty
 ln -svf ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
 
 # qTile
+mkdir -p ~/.config/qtile
 ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
 
 # Emacs
+mkdir -p ~/.config/emacs
 ln -svf ~/.dotfiles/emacs/init.el ~/.config/emacs/init.el
 
 # sddm
 sudo systemctl enable sddm
+sudo mkdir -p /usr/share/sdd/themes
 sudo cp -r ~/.dotfiles/02_submodules/aerial-sddm-theme /usr/share/sddm/themes/
-sudo mkdir /etc/sddm.conf.d
+sudo mkdir -p /etc/sddm.conf.d
 sudo ln -svf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
 
 # smartd
 sudo ln -svf ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
 
 # beets
+mkdir -p ~/.config/beets
 ln -svf ~/.dotfiles/beets/config.yaml ~/.config/beets/config.yaml
 
 # git
@@ -46,8 +51,10 @@ ln -svf ~/.dotfiles/git/gitconfig ~/.gitconfig
 ln -svf ~/.dotfiles/git/gitignore ~/.gitignore
 
 # Copy required fonts
+mkdir -p ~/.fonts
 cp -r ~/.dotfiles/00_assets/fonts/* ~/.fonts
 
 # Copy emacs assets
+mkdir -p ~/.config/emacs
 cp -r ~/.dotfiles/00_assets/themes ~/.config/emacs/
 cp ~/.dotfiles/00_assets/signature ~/.config/emacs/

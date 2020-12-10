@@ -16,7 +16,7 @@ from libqtile.config import Click, Drag, Group, Key, Screen
 from libqtile.lazy import lazy
 
 mod = "mod4"
-terminal = "alacritty"
+terminal = "prime-run alacritty"
 
 commands = {
     "lock": "xsecurelock",

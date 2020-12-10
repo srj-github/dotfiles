@@ -1,8 +1,10 @@
-git
+python
+python-pip
 fd
 ripgrep
 emacs
 qtile
+alsa-utils
 feh
 alacritty
 thunderbird
@@ -16,17 +18,26 @@ python-iwlib
 # For my custom function to get CPU temp:
 lm_sensors
 sddm
+# Required by sddm aerial theme:
+qt5-multimedia
+qt5-graphicaleffects
+qt5-quickcontrols
+gst-libav
+gst-plugins-good
+phonon-qt5-gstreaner
+# end
 xsecurelock
 swaks
 beets
 # Required by beets:
-webkit2gkt
+webkit2gtk
 kakasi
 python-pyinotify
 python-musicbrainzngs
 libbs2b
 chromaprint
 gst-plugins-bad
+# end
 rsync
 smartmontools
 flameshot
@@ -34,14 +45,16 @@ exa
 progress
 # 
 # Not required by the scripts, just a list with software I want to have it installed 
+base-devel
+ntfs-3g
+neofetch
+firefox
 vlc
 docker
 keepassxc
 gimp
 inkscape
-libreoffice
 filezilla
 htop
-vim
 vifm
-nomachine
+libreoffice

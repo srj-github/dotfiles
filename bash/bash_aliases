@@ -17,5 +17,5 @@ alias vpn='sudo openvpn --config ~/.private/vpn.ovpn'
 alias fs='du -hd1 | sort -h'
 
 alias ls='exa --git'
-alias tree='exa -t'
+alias tree='exa -T'
 alias lss='exa --sort=size -r -l' # sort by size - highest, up
