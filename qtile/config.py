@@ -84,7 +84,7 @@ keys = [
 groups = [
     Group(name="1", layout="monadtall", label=" main(1)", layouts=[layout.MonadTall(margin=5), layout.Stack(num_stacks=1, margin=5, border_width=0)]),
     Group(name="2", spawn="emacs", layout="monadwide", label=" code(2)", init=True),
-    Group(name="3", spawn="alacritty", layout="verticaltile", label=" terminals(3)", init=True),
+    Group(name="3", layout="verticaltile", label=" terminals(3)", init=True),
     Group(name="m", spawn="thunderbird", label=" mail(m)", init=True),
     Group(name="0", spawn="qbittorrent", label=" torrent(0)", init=True)
 ]
