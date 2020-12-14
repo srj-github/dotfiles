@@ -1,4 +1,4 @@
-directory: /media/zrg/d/mp3
+directory: /media/d/mp3
 
 plugins: fetchart scrub lyrics
 import:

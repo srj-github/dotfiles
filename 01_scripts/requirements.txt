@@ -17,18 +17,13 @@ python-psutil
 python-iwlib
 # For my custom function to get CPU temp:
 lm_sensors
-sddm
-# Required by sddm aerial theme:
-qt5-multimedia
-qt5-graphicaleffects
-qt5-quickcontrols
-gst-libav
-gst-plugins-good
-phonon-qt5-gstreaner
-# end
 xsecurelock
 swaks
 npm
+inetutils
+unzip
+unrar
+p7zip
 beets
 # Required by beets:
 webkit2gtk
@@ -38,7 +33,6 @@ python-musicbrainzngs
 libbs2b
 chromaprint
 gst-plugins-bad
-unzip
 # end
 rsync
 smartmontools

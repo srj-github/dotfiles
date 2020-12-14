@@ -32,13 +32,6 @@ ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
 mkdir -p ~/.config/emacs
 ln -svf ~/.dotfiles/emacs/init.el ~/.config/emacs/init.el
 
-# sddm
-sudo systemctl enable sddm
-sudo mkdir -p /usr/share/sdd/themes
-sudo cp -r ~/.dotfiles/02_submodules/aerial-sddm-theme /usr/share/sddm/themes/
-sudo mkdir -p /etc/sddm.conf.d
-sudo ln -svf ~/.dotfiles/sddm/* /etc/sddm.conf.d/
-
 # smartd
 sudo ln -svf ~/.dotfiles/smartd/smartd.conf /etc/smartd.conf
 

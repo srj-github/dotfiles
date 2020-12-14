@@ -39,7 +39,7 @@ keys = [
     Key([mod], 'l', lazy.spawn(commands["lock"])),  # lock screen with securelock
 
     Key([mod], "r",
-        lazy.spawn("dmenu_run -p 'Run: '"),
+        lazy.spawn("dmenu_run -p 'Run: ' -l 20"),
         desc='Dmenu Run Launcher'
         ),
 
