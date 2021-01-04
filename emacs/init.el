@@ -7,6 +7,7 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -66,10 +67,6 @@
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
-;; ORG-mode
-
-(setq org-directory "~/org/")
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
 
 ;; MELPA initialization
 (require 'package)
@@ -120,7 +117,12 @@
   :init
   (setq evil-want-keybinding nil)
   (setq evil-want-integration t)
-  :config (evil-mode 1))
+  :config 
+  (evil-mode 1)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'org-agenda-mode' 'normal))
 
 (use-package evil-collection
   :after evil
@@ -185,17 +187,22 @@
 	   (doom-modeline-enable-word-count t))
   :init (doom-modeline-mode 1))
 
+(toggle-frame-maximized)
+
+(defun emacs-startup-screen ()
+  "Display the weekly org-agenda and all todos."
+  (dashboard-refresh-buffer)
+  (org-agenda nil "n"))
+(add-hook 'emacs-startup-hook #'emacs-startup-screen)
+
 (use-package dashboard
   :custom ((dashboard-center-content t)
-	   (dashboard-startup-banner "~/.config/emacs/logo.png")
-	   (dashboard-set-heading-icons t)
-	   (dashboard-set-file-icons t)
-	   (dashboard-items '((bookmarks . 10)
-			      (agenda . 20)
-			      (recents . 10)))
-	   (dashboard-week-agenda t))
-  :config
-  (dashboard-setup-startup-hook))
+   (dashboard-startup-banner "~/.config/emacs/logo.png")
+   (dashboard-set-heading-icons t)
+   (dashboard-set-file-icons t)
+   (dashboard-items '((bookmarks . 10)
+		      (recents . 10)))
+   (dashboard-week-agenda t)))
 
 (use-package beacon
   :config (beacon-mode 1))
@@ -213,3 +220,36 @@
 
 (use-package yascroll
   :config (global-yascroll-bar-mode 1))
+
+(use-package magit)
+
+(use-package evil-magit
+  :after magit)
+
+;; ORG-mode
+(setq org-directory "~/org/")
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    ;; Replace list hyphen with dot
+	    (font-lock-add-keywords 'org-mode
+				    '(("^ *\\([-]\\) "
+				       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+	    (org-indent-mode)
+
+	    (setq org-ellipsis " ")
+	    (setq org-hide-emphasis-markers t)))
+
+(defun org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . org-mode-visual-fill))
+
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode))
+
