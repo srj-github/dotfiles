@@ -16,7 +16,7 @@ from libqtile.config import Click, Drag, Group, Key, Screen
 from libqtile.lazy import lazy
 
 mod = "mod4"
-terminal = "prime-run alacritty"
+terminal = "alacritty"
 
 commands = {
     "lock": "xsecurelock",
@@ -216,6 +216,7 @@ screens = [
                         25,
                 )
         ),
+        Screen()
 ]
 
 # Drag floating layouts.

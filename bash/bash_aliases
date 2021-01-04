@@ -20,6 +20,4 @@ alias ls='exa --git'
 alias tree='exa -T'
 alias lss='exa --sort=size -r -l' # sort by size - highest, up
 
-alias alacritty='prime-run alacritty'
-
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
