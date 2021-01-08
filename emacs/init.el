@@ -9,6 +9,7 @@
 
 
 (setq inhibit-startup-message t)
+(setq lsp-enable-file-watchers nil) ; disable file watchers to bypass too many files error 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (set-fringe-mode 10)
