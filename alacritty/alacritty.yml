@@ -40,7 +40,7 @@ colors:
 # Font configuration (changes require restart)
 font:
   # The size to use.
-  size: 10
+  size: 13
   # The normal (roman) font face to use.
   normal:
     family: Envy Code R
