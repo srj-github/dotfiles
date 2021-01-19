@@ -7,9 +7,14 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+(defun emacs-startup-screen ()
+  "Display the weekly org-agenda and all todos."
+  (org-agenda nil "n")
+  (delete-other-windows))
+(add-hook 'emacs-startup-hook #'emacs-startup-screen)
 
 (setq inhibit-startup-message t)
-(setq lsp-enable-file-watchers nil) ; disable file watchers to bypass too many files error 
+(setq lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (set-fringe-mode 10)
@@ -18,7 +23,6 @@
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Envy Code R" :height 130)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-(setq js2-include-node-externs t)
 
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
@@ -30,12 +34,9 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'column-number-mode)
 
-
 ;;; Key-bindings
 
-(global-set-key (kbd "C-<tab>") 'other-window)
 (global-set-key (kbd "<f12>") 'org-agenda)
-(global-set-key (kbd "<f6>") 'dashboard-refresh-buffer)
 
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
@@ -156,6 +157,7 @@
 (use-package js2-mode
   :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
           (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode)))
+(setq js2-include-node-externs t)
 
 (use-package emmet-mode
   :config (add-hook 'web-mode-hook 'emmet-mode))
@@ -190,21 +192,6 @@
   :init (doom-modeline-mode 1))
 
 (toggle-frame-maximized)
-
-(defun emacs-startup-screen ()
-  "Display the weekly org-agenda and all todos."
-  (dashboard-refresh-buffer)
-  (org-agenda nil "n"))
-(add-hook 'emacs-startup-hook #'emacs-startup-screen)
-
-(use-package dashboard
-  :custom ((dashboard-center-content t)
-   (dashboard-startup-banner "~/.config/emacs/logo.png")
-   (dashboard-set-heading-icons t)
-   (dashboard-set-file-icons t)
-   (dashboard-items '((bookmarks . 10)
-		      (recents . 10)))
-   (dashboard-week-agenda t)))
 
 (use-package beacon
   :config (beacon-mode 1))
