@@ -191,8 +191,6 @@
 	   (doom-modeline-enable-word-count t))
   :init (doom-modeline-mode 1))
 
-(toggle-frame-maximized)
-
 (use-package beacon
   :config (beacon-mode 1))
 
@@ -231,7 +229,7 @@
 	    (setq org-hide-emphasis-markers t)))
 
 (defun org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
+  (setq visual-fill-column-width 200
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
