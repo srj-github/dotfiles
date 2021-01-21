@@ -24,6 +24,8 @@
 (set-face-attribute 'default nil :font "Envy Code R" :height 130)
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
+(global-auto-revert-mode t)
+
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
 (defun my-signature()
