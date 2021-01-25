@@ -1,4 +1,4 @@
-directory: /media/d/mp3
+directory: ~/Music
 
 plugins: fetchart scrub lyrics
 import:
