@@ -14,6 +14,7 @@
 (add-hook 'emacs-startup-hook #'emacs-startup-screen)
 
 (setq inhibit-startup-message t)
+(setq org-enforce-todo-dependencies t)
 (setq lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -21,7 +22,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (setq visible-bell t)
-(set-face-attribute 'default nil :font "Envy Code R" :height 130)
+(set-face-attribute 'default nil :font "Envy Code R")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 
 (global-auto-revert-mode t)
@@ -38,7 +39,7 @@
 
 ;;; Key-bindings
 
-(global-set-key (kbd "<f12>") 'org-agenda)
+(global-set-key (kbd "<f10>") 'org-agenda)
 
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
@@ -202,10 +203,10 @@
 (use-package which-key
   :config (which-key-mode 1))
 
-(use-package helpful
-  :custom (counsel-describe-function-function #'helpful-callable)
-          (counsel-describe-variable-function #'helpful-variable)
-  :bind   ([remap describe-key] . helpful-key))
+;; (use-package helpful
+;;   :custom (counsel-describe-function-function #'helpful-callable)
+;;           (counsel-describe-variable-function #'helpful-variable)
+;;   :bind   ([remap describe-key] . helpful-key))
 
 (use-package yascroll
   :config (global-yascroll-bar-mode 1))
@@ -221,19 +222,29 @@
 
 (add-hook 'org-mode-hook
 	  (lambda ()
-	    ;; Replace list hyphen with dot
-	    (font-lock-add-keywords 'org-mode
-				    '(("^ *\\([-]\\) "
-				       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 	    (org-indent-mode)
-
 	    (setq org-ellipsis " ")
-	    (setq org-hide-emphasis-markers t)))
+	    (setq org-hide-emphasis-markers nil)))
 
 (defun org-mode-visual-fill ()
   (setq visual-fill-column-width 200
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
+
+;; TODO STATES
+(setq org-todo-keywords
+    '((sequence "TODO" "HOLD" "|" "DONE" "CANCELLED")))
+(setq org-todo-keyword-faces
+    '(("TODO" .  "red" )
+	("HOLD" .  "orange" )
+	("DONE" . "Green")
+	("CANCELLED" .  "PaleGreen")))
+(setq org-fontify-done-headline t)
+
+;; PRIORITIES
+(setq org-highest-priority 49)
+(setq org-lowest-priority 57)
+(setq org-default-priority 53)
 
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
@@ -241,4 +252,3 @@
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode))
-
