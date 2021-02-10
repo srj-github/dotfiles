@@ -21,3 +21,11 @@ alias tree='exa -T'
 alias lss='exa --sort=size -r -l' # sort by size - highest, up
 
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
+
+git-diff() {
+	git diff-tree -r "$1" --no-commit-id --name-only
+}
+
+grp() {
+	grep -rnw . -e "$1"
+}
