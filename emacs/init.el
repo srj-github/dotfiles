@@ -118,7 +118,6 @@
 	 ("C-r" . swiper)))
 
 (use-package evil
-  :defer nil
   :bind ([remap evil-paste-pop] . counsel-yank-pop)
   :init
   (setq evil-want-keybinding nil)
@@ -128,7 +127,8 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  (evil-set-initial-state 'org-agenda-mode' 'normal))
+  (evil-set-initial-state 'org-agenda-mode' 'normal)
+  :demand)
 
 (use-package evil-collection
   :after evil
@@ -213,8 +213,8 @@
 
 (use-package magit)
 
-(use-package evil-magit
-  :after magit)
+;; (use-package evil-magit
+;;   :after magit)
 
 ;; ORG-mode
 (setq org-directory "~/org/")
@@ -233,9 +233,10 @@
 
 ;; TODO STATES
 (setq org-todo-keywords
-    '((sequence "TODO" "HOLD" "|" "DONE" "CANCELLED")))
+    '((sequence "TODO(t!/!)" "BIROU(b!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (setq org-todo-keyword-faces
     '(("TODO" .  "red" )
+	("BIROU" .  "blue" )
 	("HOLD" .  "orange" )
 	("DONE" . "Green")
 	("CANCELLED" .  "PaleGreen")))
