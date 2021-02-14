@@ -7,63 +7,57 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+;; Startup
 (defun emacs-startup-screen ()
   "Display the weekly org-agenda and all todos."
   (org-agenda nil "n")
   (delete-other-windows))
 (add-hook 'emacs-startup-hook #'emacs-startup-screen)
-
 (setq inhibit-startup-message t)
-(setq org-enforce-todo-dependencies t)
-(setq lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
+;; Disable bars
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(set-fringe-mode 10)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
+
+;; Various
+(set-fringe-mode 10) ;; margins
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Envy Code R")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
-
 (global-auto-revert-mode t)
 
+;; Key-bindings
+(global-set-key (kbd "<f10>") 'org-agenda)
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
 (defun my-signature()
   (interactive)
   (insert-file-contents "~/.config/emacs/signature"))
 
-;; Display line-numbers
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'prog-mode-hook 'column-number-mode)
-
-;;; Key-bindings
-
-(global-set-key (kbd "<f10>") 'org-agenda)
-
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
 (load custom-file)
-
 ;; Backup and Autosave Directories
-
 (setq temporary-file-directory "~/.config/emacs/tmp/")
 (unless (file-exists-p temporary-file-directory)
     (make-directory temporary-file-directory))
-
 (setq backup-directory-alist
       `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-
 ;; Tab Indent to 4 spaces in python
-
 (add-hook 'python-mode-hook
       (lambda ()
         (setq tab-width 4)
         (setq python-indent-offset 4)))
-   
+; Indent 2 spaces in js2
+(setq js-indent-level 2)
+;; Display line-numbers
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
+ 
 ;; Scroll one line at a time (less "jumpy" than defaults)
 (setq scroll-margin 1
   scroll-step 1
@@ -72,7 +66,6 @@
   mouse-wheel-follow-mouse 't
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
-
 
 ;; MELPA initialization
 (require 'package)
@@ -143,8 +136,7 @@
 
 (use-package flycheck
   :init (global-flycheck-mode)
-  :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ;; DO NOT treat emacs config file as a package file
-  )
+  :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))) ;; DO NOT treat emacs config file as a package file
 
 (use-package company
   :config (add-hook 'after-init-hook 'global-company-mode))
@@ -154,13 +146,18 @@
 (use-package web-mode
   :config  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 	   (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-	   (setq web-mode-enable-current-column-highlight t)
-	   (setq web-mode-enable-current-element-highlight t))
+	   (add-to-list 'auto-mode-alist '("\\.hbs?\\'" . web-mode))
+	   (setq web-mode-engines-alist '(("ctemplate" . "\\.hbs\\'")))
+  :custom  (web-mode-enable-current-column-highlight nil)
+	   (web-mode-enable-current-element-highlight nil))
 
 (use-package js2-mode
   :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-          (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode)))
-(setq js2-include-node-externs t)
+          (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
+          (setq js2-include-node-externs t)
+	  (setq js2-highlight-level 3)
+	  )
+(defvar lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
 
 (use-package emmet-mode
   :config (add-hook 'web-mode-hook 'emmet-mode))
@@ -173,9 +170,11 @@
     :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
-  :custom lsp-ui-sideline-show-hover t
-	  lsp-ui-sideline-show-diagnostics t
-          lsp-ui-sideline-show-code-actions t)
+  :hook (lsp-mode . lsp-ui-mode)
+  :config (setq lsp-ui-flycheck-enable t)
+  	  (setq lsp-ui-sideline-show-flycheck t)
+	  (setq lsp-ui-sideline-show-diagnostics t)
+          (setq lsp-ui-sideline-show-code-actions t))
 
 (use-package highlight-indent-guides
   :diminish
@@ -203,22 +202,20 @@
 (use-package which-key
   :config (which-key-mode 1))
 
-;; (use-package helpful
-;;   :custom (counsel-describe-function-function #'helpful-callable)
-;;           (counsel-describe-variable-function #'helpful-variable)
-;;   :bind   ([remap describe-key] . helpful-key))
+(use-package helpful
+  :custom (counsel-describe-function-function #'helpful-callable)
+          (counsel-describe-variable-function #'helpful-variable)
+  :bind   ([remap describe-key] . helpful-key))
 
 (use-package yascroll
   :config (global-yascroll-bar-mode 1))
 
 (use-package magit)
 
-;; (use-package evil-magit
-;;   :after magit)
-
 ;; ORG-mode
 (setq org-directory "~/org/")
 (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+(defvar org-enforce-todo-dependencies t)
 
 (add-hook 'org-mode-hook
 	  (lambda ()
@@ -232,9 +229,9 @@
   (visual-fill-column-mode 1))
 
 ;; TODO STATES
-(setq org-todo-keywords
+(defvar org-todo-keywords
     '((sequence "TODO(t!/!)" "BIROU(b!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
-(setq org-todo-keyword-faces
+(defvar org-todo-keyword-faces
     '(("TODO" .  "red" )
 	("BIROU" .  "blue" )
 	("HOLD" .  "orange" )
@@ -243,9 +240,9 @@
 (setq org-fontify-done-headline t)
 
 ;; PRIORITIES
-(setq org-highest-priority 49)
-(setq org-lowest-priority 57)
-(setq org-default-priority 53)
+(defvar org-highest-priority 49)
+(defvar org-lowest-priority 57)
+(defvar org-default-priority 53)
 
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
@@ -253,3 +250,6 @@
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode))
+
+;; Set comments color to a nice green
+(set-face-foreground 'font-lock-comment-face "spring green")
