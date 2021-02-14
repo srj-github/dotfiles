@@ -23,7 +23,13 @@ alias lss='exa --sort=size -r -l' # sort by size - highest, up
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
 git-diff() {
-	git diff-tree -r "$1" --no-commit-id --name-only
+	if [ "$1" = "last" ]; then
+		git diff-tree -r $(git log --format="%H" -n 1) --no-commit-id --name-only
+	elif [ "$1" = "" ]; then
+		echo "No argument given!"
+	else
+		git diff-tree -r "$1" --no-commit-id --name-only
+	fi
 }
 
 grp() {
