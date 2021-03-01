@@ -7,11 +7,30 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
-;; Startup
+;; My Functions
+
+(defun my/evil-shift-right ()
+  (interactive)
+  (evil-shift-right evil-visual-beginning evil-visual-end)
+  (evil-normal-state)
+  (evil-visual-restore))
+
+(defun my/evil-shift-left ()
+  (interactive)
+  (evil-shift-left evil-visual-beginning evil-visual-end)
+  (evil-normal-state)
+  (evil-visual-restore))
+
 (defun emacs-startup-screen ()
   "Display the weekly org-agenda and all todos."
   (org-agenda nil "n")
   (delete-other-windows))
+
+(defun my-signature()
+  (interactive)
+  (insert-file-contents "~/.config/emacs/signature"))
+
+;; Startup
 (add-hook 'emacs-startup-hook #'emacs-startup-screen)
 (setq inhibit-startup-message t)
 ;; Disable bars
@@ -31,9 +50,7 @@
 (global-set-key (kbd "<f10>") 'org-agenda)
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
-(defun my-signature()
-  (interactive)
-  (insert-file-contents "~/.config/emacs/signature"))
+
 
 ;; Set Custom file
 (setq custom-file "~/.config/emacs/custom.el")
@@ -120,6 +137,10 @@
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
+  (evil-define-key 'visual global-map (kbd ">") 'my/evil-shift-right)
+  (evil-define-key 'visual global-map (kbd "<") 'my/evil-shift-left)
+
+
   (evil-set-initial-state 'org-agenda-mode' 'normal)
   :demand)
 
@@ -145,8 +166,9 @@
 
 (use-package web-mode
   :config  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-	   (add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+	   (add-to-list 'auto-mode-alist '("\\.css?\\'" . css-mode))
 	   (add-to-list 'auto-mode-alist '("\\.hbs?\\'" . web-mode))
+	   (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
 	   (setq web-mode-engines-alist '(("ctemplate" . "\\.hbs\\'")))
   :custom  (web-mode-enable-current-column-highlight nil)
 	   (web-mode-enable-current-element-highlight nil))
@@ -166,6 +188,7 @@
 (use-package lsp-mode
     :hook (python-mode . lsp-deferred) ;; make sure pyls is in path ~/.local/bin
     :hook (web-mode . lsp-deferred) 
+    :hook (css-mode . lsp-deferred) 
     :hook (js2-mode . lsp-deferred) 
     :commands (lsp lsp-deferred))
 
@@ -211,6 +234,12 @@
   :config (global-yascroll-bar-mode 1))
 
 (use-package magit)
+
+(use-package neotree
+  :config (global-set-key [f8] 'neotree-toggle)
+	  (setq neo-window-fixed-size nil)
+	  (setq neo-window-width 55)
+	  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 
 ;; ORG-mode
 (setq org-directory "~/org/")
