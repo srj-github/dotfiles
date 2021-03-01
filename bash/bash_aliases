@@ -22,6 +22,8 @@ alias lss='exa --sort=size -r -l' # sort by size - highest, up
 
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
+alias lamp=' sudo docker run -i -t -p "80:80" -v ${PWD}/app:/app -v ${PWD}/mysql:/var/lib/mysql mattrayner/lamp:latest'
+
 git-diff() {
 	if [ "$1" = "last" ]; then
 		git diff-tree -r $(git log --format="%H" -n 1) --no-commit-id --name-only
