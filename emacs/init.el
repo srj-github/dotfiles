@@ -39,6 +39,9 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; Disable lockfiles
+(setq create-lockfiles nil)
+
 ;; Various
 (set-fringe-mode 10) ;; margins
 (setq visible-bell t)
@@ -174,7 +177,7 @@
 	   (web-mode-enable-current-element-highlight nil))
 
 (use-package js2-mode
-  :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  :config (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
           (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
           (setq js2-include-node-externs t)
 	  (setq js2-highlight-level 3)
@@ -182,7 +185,10 @@
 (defvar lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
 
 (use-package emmet-mode
-  :config (add-hook 'web-mode-hook 'emmet-mode))
+  :config (add-hook 'web-mode-hook 'emmet-mode)
+  (add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
+  (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
+  (add-hook 'rjsx-mode-hook 'emmet-mode))
 
 (setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
@@ -190,6 +196,8 @@
     :hook (web-mode . lsp-deferred) 
     :hook (css-mode . lsp-deferred) 
     :hook (js2-mode . lsp-deferred) 
+    :hook (js-jsx-mode . lsp-deferred) 
+    :config (add-to-list 'lsp-language-id-configuration '(js-jsx-mode . "javascript"))
     :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
