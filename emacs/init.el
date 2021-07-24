@@ -104,6 +104,9 @@
   :config (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize)))
 
+(use-package expand-region
+  :bind ("C-=". 'er/expand-region))
+
 (use-package diminish)
 
 (use-package gruvbox-theme
