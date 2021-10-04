@@ -48,6 +48,7 @@
 (set-face-attribute 'default nil :font "Envy Code R")
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (global-auto-revert-mode t)
+(global-visual-line-mode t)
 
 ;; Key-bindings
 (global-set-key (kbd "<f10>") 'org-agenda)
