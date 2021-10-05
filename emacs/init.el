@@ -271,7 +271,7 @@
 
 ;; TODO STATES
 (defvar org-todo-keywords
-    '((sequence "TODO(t!/!)" "BIROU(b!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
+    '((sequence "TODO(t!/!)" "BIROU(b!/!)" "BUG" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (defvar org-todo-keyword-faces
     '(("TODO" .  "red" )
 	("BIROU" .  "blue" )
@@ -288,9 +288,22 @@
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
 
-(use-package org-bullets
+(use-package org-superstar
+  ;; requires fontawesome font
   :after org
-  :hook (org-mode . org-bullets-mode))
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-todo-bullet-alist '(("DONE" . ?)
+                                     ("TODO" . ?)
+                                     ("HOLD" . ?)
+                                     ("CANCELLED" . ?)
+                                     ("BIROU" . ?)
+                                     ("BUG" . ?)
+                                     ))
+  (org-superstar-headline-bullets-list '(""))
+  (org-superstar-special-todo-items t)
+  (org-superstar-leading-bullet "  ")
+  )
 
 ;; Set comments color to a nice green
 (set-face-foreground 'font-lock-comment-face "spring green")
