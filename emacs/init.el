@@ -148,7 +148,7 @@
   (evil-define-key 'visual global-map (kbd "<") 'my/evil-shift-left)
 
 
-  (evil-set-initial-state 'org-agenda-mode' 'normal)
+  (evil-set-initial-state 'org-agenda-mode' normal)
   :demand)
 
 (use-package evil-collection
