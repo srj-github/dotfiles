@@ -7,6 +7,8 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+(require 'dired-x)
+
 ;; My Functions
 
 (defun my/evil-shift-right ()
@@ -247,15 +249,42 @@
 
 (use-package magit)
 
-(use-package neotree
-  :config (global-set-key [f8] 'neotree-toggle)
-	  (setq neo-window-fixed-size nil)
-	  (setq neo-window-width 55)
-	  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+(use-package dired
+  :ensure nil
+  :config (setq dired-dwim-target t)
+          (setq delete-by-moving-to-trash t)
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
+
+(use-package dired-single
+  :commands (dired dired-jump))
+
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package dired-hide-dotfiles
+  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "H" 'dired-hide-dotfiles-mode))
+
+(use-package dired-open
+  :commands (dired dired-jump)
+  :config
+  ;; Doesn't work as expected!
+  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
+  (setq dired-open-extensions '(("jpg" . "gwenview")
+                                ("mkv" . "smplayer"))))
 
 ;; ORG-mode
-(setq org-directory "~/org/")
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+(setq org-directory "~/org/GDT")
+(setq org-agenda-files (directory-files-recursively "~/org/GDT/" "\\.org$"))
+(setq org-archive-location "~/org/archive.org::* From %s")
 (defvar org-enforce-todo-dependencies t)
 
 (add-hook 'org-mode-hook
