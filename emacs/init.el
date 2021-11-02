@@ -287,6 +287,7 @@
 (use-package vterm
   :commands vterm
   :config
+  (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
   (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
   (setq vterm-shell "bash")
   (setq vterm-max-scrollback 10000)
