@@ -8,9 +8,6 @@
 # . . . . . . . . . . . . . . . . . . . . .
 set -euo pipefail
 
-# Install required packages
-grep -v "^#" requirements.txt | sudo pacman -S --needed -
-
 # Clone dotfiles folder
 git clone --recurse-submodules --remote-submodules https://github.com/srj-github/dotfiles ~/.dotfiles
 
@@ -21,12 +18,12 @@ ln -svf ~/.dotfiles/bash/bash_aliases ~/.bash_aliases
 ln -svf ~/.dotfiles/bash/inputrc ~/.inputrc
 
 # alacritty
-mkdir -p ~/.config/alacritty
-ln -svf ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
+#mkdir -p ~/.config/alacritty
+#ln -svf ~/.dotfiles/alacritty/alacritty.yml ~/.config/alacritty/alacritty.yml
 
 # qTile
-mkdir -p ~/.config/qtile
-ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
+#mkdir -p ~/.config/qtile
+#ln -svf ~/.dotfiles/qtile/config.py ~/.config/qtile/config.py
 
 # Emacs
 mkdir -p ~/.config/emacs
