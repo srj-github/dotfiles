@@ -124,8 +124,7 @@
 (use-package ivy
   :defer 0.1
   :diminish
-  :bind (("C-c C-r" . ivy-resume)
-	 ("C-x B" . ivy-switch-buffer-other-window))
+  :bind (("C-x B" . ivy-switch-buffer-other-window))
   :custom
   (ivy-count-format "%d/%d")
   (ivy-use-virtual-buffers t)
@@ -136,8 +135,7 @@
 
 (use-package swiper
   :after ivy
-  :bind (("C-s" . swiper)
-	 ("C-r" . swiper)))
+  :bind (("C-s" . swiper)))
 
 (use-package evil
   :bind ([remap evil-paste-pop] . counsel-yank-pop)
