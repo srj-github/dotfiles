@@ -12,7 +12,7 @@ alias sudo='sudo '
 alias shutdown='shutdown -h now'
 alias restart='shutdown -r now'
 
-alias vpn='sudo openvpn --config ~/.private/vpn.ovpn'
+alias vpn='sudo openvpn --config ~/.private/vpn.ovpn --auth-user-pass ~/.private/vpnPass'
 
 alias fs='du -hd1 | sort -h'
 
