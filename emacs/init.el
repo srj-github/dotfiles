@@ -284,6 +284,7 @@
 
 (use-package vterm
   :commands vterm
+  :bind (("s-v" . vterm))
   :config
   (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
   (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
