@@ -44,6 +44,9 @@
 ;; Disable lockfiles
 (setq create-lockfiles nil)
 
+;; Fix for xdg startup
+(setq process-connection-type nil)
+
 ;; Various
 (set-fringe-mode 10) ;; margins
 (setq visible-bell t)
