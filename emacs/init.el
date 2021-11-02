@@ -181,9 +181,8 @@
 (use-package dired-open
   :after dired
   :config
-  (setq dired-open-extensions '(("jpg" . "gwenview")
-				("jpeg" . "gwenview")
-                                ("mkv" . "smplayer"))))
+  (add-to-list 'dired-open-functions #'dired-open-xdg t)
+  )
 
 (use-package dired-single
   :commands (dired dired-jump))
