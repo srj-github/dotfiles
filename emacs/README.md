@@ -33,6 +33,7 @@ C-x C-j : start dired (dired-jump)
 O : change file owner (dired-do-chown)
 g G : change file group (dired-do-chgrp)
 M : change file permissions (dired-do-chmod)
+s-z : Show foler recursive size (dired-du)
 ```
 
 #### Org-mode

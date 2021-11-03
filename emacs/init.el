@@ -178,6 +178,12 @@
     "h" 'dired-single-up-directory
     "l" 'dired-single-buffer))
 
+(use-package dired-du
+  :bind (("s-z" . dired-du-mode))
+  :config
+  (setq dired-du-size-format t)
+  )
+
 (use-package dired-open
   :after dired
   :config
