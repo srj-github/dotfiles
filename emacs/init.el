@@ -289,7 +289,9 @@
 
 (use-package vterm
   :commands vterm
-  :bind (("s-v" . vterm))
+  :bind (("s-v" . vterm)
+	 ("<s-escape>" . vterm-send-escape)
+	 )
   :config
   (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
   (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
