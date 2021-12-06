@@ -150,6 +150,8 @@
   (evil-define-key 'visual global-map (kbd ">") 'my/evil-shift-right)
   (evil-define-key 'visual global-map (kbd "<") 'my/evil-shift-left)
 
+  (define-key evil-normal-state-map (kbd "C-w i") 'evil-window-vsplit)
+  (define-key evil-normal-state-map (kbd "C-w u") 'evil-window-split)
 
   (evil-set-initial-state 'org-agenda-mode' normal)
   :demand)
