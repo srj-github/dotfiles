@@ -23,17 +23,17 @@
   (evil-normal-state)
   (evil-visual-restore))
 
-(defun emacs-startup-screen ()
-  "Display the weekly org-agenda and all todos."
-  (org-agenda nil "n")
-  (delete-other-windows))
+;;(defun emacs-startup-screen ()
+;;  "Display the weekly org-agenda and all todos."
+;;  (org-agenda nil "n")
+;;  (delete-other-windows))
 
 (defun my-signature()
   (interactive)
   (insert-file-contents "~/.config/emacs/signature"))
 
 ;; Startup
-(add-hook 'emacs-startup-hook #'emacs-startup-screen)
+;;(add-hook 'emacs-startup-hook #'emacs-startup-screen)
 (setq inhibit-startup-message t)
 ;; Disable bars
 (scroll-bar-mode -1)
