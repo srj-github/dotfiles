@@ -303,8 +303,8 @@
 
 ;; ORG-mode
 (setq org-directory "~/org/GDT")
-(setq org-agenda-files (directory-files-recursively "~/org/GDT/" "\\.org$"))
-(setq org-archive-location "~/org/archive.org::* From %s")
+(setq org-agenda-files (directory-files-recursively "~/Sync/GDT/" "\\.org$"))
+(setq org-archive-location "~/Sync/archive.org::* From %s")
 (defvar org-enforce-todo-dependencies t)
 
 (add-hook 'org-mode-hook
