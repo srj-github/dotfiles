@@ -234,6 +234,7 @@
   :config (add-hook 'web-mode-hook 'emmet-mode)
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
+  (add-to-list 'emmet-jsx-major-modes 'rjsx-mode)
   (add-hook 'rjsx-mode-hook 'emmet-mode))
 
 (setq lsp-keymap-prefix "s-l")
