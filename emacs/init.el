@@ -321,10 +321,11 @@
 
 ;; TODO STATES
 (defvar org-todo-keywords
-    '((sequence "TODO(t!/!)" "PROJECT(p!/!)" "BIROU(b!/!)" "BUG" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
+    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "ACASA(a!/!)" "BIROU(b!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (defvar org-todo-keyword-faces
-    '(("TODO" .  "firebrick" )
-	("PROJECT" .  "dark red" )
+    '(("FEATURE" .  "olive" )
+	("ACASA" .  "mediumPurple" )
+	("CHECK" .  "DarkTurquoise" )
 	("BIROU" .  "blue" )
 	("HOLD" .  "orange" )
 	("DONE" . "Green")
@@ -345,8 +346,9 @@
   :hook (org-mode . org-superstar-mode)
   :custom
   (org-superstar-todo-bullet-alist '(("DONE" . ?)
-                                     ("TODO" . ?)
-                                     ("PROJECT" . ?)
+                                     ("FEATURE" . ?)
+                                     ("ACASA" . ?)
+                                     ("CHECK" . ?)
                                      ("HOLD" . ?)
                                      ("CANCELLED" . ?)
                                      ("BIROU" . ?)
