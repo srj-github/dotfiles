@@ -9,32 +9,52 @@
 
 (require 'dired-x)
 
-;; My Functions
+(defvar dired-sort-map (make-sparse-keymap))
 
-(defun my/evil-shift-right ()
-  (interactive)
-  (evil-shift-right evil-visual-beginning evil-visual-end)
-  (evil-normal-state)
-  (evil-visual-restore))
+(define-key dired-mode-map (kbd "C-c s") dired-sort-map)
 
-(defun my/evil-shift-left ()
-  (interactive)
-  (evil-shift-left evil-visual-beginning evil-visual-end)
-  (evil-normal-state)
-  (evil-visual-restore))
+(define-key dired-sort-map "s" (lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S"))))
+(define-key dired-sort-map "x" (lambda () "sort by eXtension" (interactive) (dired-sort-other (concat dired-listing-switches " -X"))))
+(define-key dired-sort-map "t" (lambda () "sort by Time" (interactive) (dired-sort-other (concat dired-listing-switches " -t"))))
+(define-key dired-sort-map "n" (lambda () "sort by Name" (interactive) (dired-sort-other dired-listing-switches)))
+(define-key dired-sort-map "?" (lambda () "sort help" (interactive) (message "s Size; x eXtension; t Time; n Name")))
 
-;;(defun emacs-startup-screen ()
+(provide 'dired-sort-map)
+
+(defun emacs-startup-screen ()
 ;;  "Display the weekly org-agenda and all todos."
-;;  (org-agenda nil "n")
-;;  (delete-other-windows))
+  (org-agenda nil "a")
+  )
 
 (defun my-signature()
   (interactive)
-  (insert-file-contents "~/.config/emacs/signature"))
+  (insert-file-contents "~/.emacs.d/signature"))
 
 ;; Startup
-;;(add-hook 'emacs-startup-hook #'emacs-startup-screen)
-(setq inhibit-startup-message t)
+
+(defun zrg/buffer-to-side-window ()
+  "Place the current buffer in the side window at the right."
+  (interactive)
+  (let ((buf (current-buffer)))
+    (display-buffer-in-side-window
+     buf '((window-width . 0.10)
+           (side . right)
+           (slot . -1)
+           (window-parameters . (no-delete-other-windows . t))))
+    (delete-window)))
+
+(add-hook 'after-init-hook
+	  (lambda ()
+
+	    (find-file "~/org/start.org")
+	    (zrg/buffer-to-side-window)
+	    (other-window 1)
+	    ))
+
+;;(setq inhibit-startup-message t)
+
+(setq inhibit-default-init t)
+
 ;; Disable bars
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -51,7 +71,7 @@
 (set-fringe-mode 10) ;; margins
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Envy Code R")
-(add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (global-auto-revert-mode t)
 (global-visual-line-mode t)
 
@@ -60,12 +80,11 @@
 ;; just a function to display my ASCII art signature
 (global-set-key (kbd "<f5>") 'my-signature)
 
-
 ;; Set Custom file
-(setq custom-file "~/.config/emacs/custom.el")
+(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 ;; Backup and Autosave Directories
-(setq temporary-file-directory "~/.config/emacs/tmp/")
+(setq temporary-file-directory "~/.emacs.d/tmp/")
 (unless (file-exists-p temporary-file-directory)
     (make-directory temporary-file-directory))
 (setq backup-directory-alist
@@ -73,11 +92,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Tab Indent to 4 spaces in python
-(add-hook 'python-mode-hook
-      (lambda ()
-        (setq tab-width 4)
-        (setq python-indent-offset 4)))
 ; Indent 2 spaces in js2
 (setq js-indent-level 2)
 ;; Display line-numbers
@@ -106,20 +120,128 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package exec-path-from-shell
-  :config (when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize)))
+(defun efs/exwm-update-class ()
+  (exwm-workspace-rename-buffer exwm-class-name))
 
-(use-package expand-region
-  :bind ("C-=". 'er/expand-region))
+(defun efs/run-in-background (command)
+  (let ((command-parts (split-string command "[ ]+")))
+    (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
 
-(use-package diminish)
+;; This function should be used only after configuring autorandr!
+;; Set the configuration for laptop screen only with "autorandr --save noExternalDisplay"
+(defun efs/update-displays ()
+  (efs/run-in-background "autorandr --change --force")
+  (message  
+   (string-trim (shell-command-to-string "autorandr --current")))
+  )
+
+(defun efs/exwm-init-hook ()
+
+  ;; Show the time and date in modeline
+  (setq display-time-day-and-date t)
+  (display-time-mode 1)
+  ;; Also take a look at display-time-format and format-time-string
+
+  ;; Launch apps that will run in the background
+  (efs/run-in-background "nm-applet")
+  (efs/run-in-background "pasystray")
+  (efs/run-in-background "blueman-applet")
+
+  (display-battery-mode 1)
+
+  (setq display-time-24hr-format t)
+  (display-time-mode 1)
+  
+
+  (setq mouse-autoselect-window t
+	focus-follows-mouse t)
+  )
+
+(use-package exwm
+  :bind ("s-x" . 'counsel-linux-app)
+  :config
+  (require 'exwm-randr)
+  (exwm-randr-enable)
+
+  (add-hook 'exwm-randr-screen-change-hook
+	    (lambda()
+	      (sleep-for 5) ;; allow 5 seconds for the monitor to wake up
+	      (if (string= (efs/update-displays) "noExternalDisplay")
+		  (setq exwm-randr-workspace-monitor-plist '(0 "eDP-1" 1 "eDP-1" 2 "eDP-1" 3 "eDP-1" 4 "eDP-1" 5 "eDP-1" ))
+		(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 1 "HDMI-1" 2 "HDMI-1" 3 "HDMI-1" 4 "HDMI-1" 5 "eDP-1"))
+		)
+	      ))
+
+  (setq exwm-workspace-number 6)
+  (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+
+  ;; When window "class" updates, use it to set the buffer name
+  (add-hook 'exwm-update-class-hook #'efs/exwm-update-class)
+
+  ;; When EXWM starts up, do some extra confifuration
+  (add-hook 'exwm-init-hook #'efs/exwm-init-hook)
+
+  ;; (require 'exwm-systemtray)
+  ;; (exwm-systemtray-enable)
+
+  ;;(start-file-process-shell-command "firefox" nil "firefox")
+
+  ;; Remap CapsLock to Ctrl
+  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/emacs/Xmodmap")
+
+
+  (setq exwm-input-prefix-keys
+	'(
+	  ?\C-w
+	  ?\C-x
+	  ?\M-x
+	  )
+	)
+  (setq exwm-input-global-keys
+	'(
+          ;; Reset to line-mode (C-c C-k switches to char-mode via exwm-input-release-keyboard)
+          ([?\s-r] . exwm-reset)
+
+          ;; Switch workspace
+          ([?\s-w] . exwm-workspace-switch)
+          ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
+          ([?\s-1] . (lambda () (interactive) (exwm-workspace-switch-create 1)))
+          ([?\s-2] . (lambda () (interactive) (exwm-workspace-switch-create 2)))
+          ([?\s-3] . (lambda () (interactive) (exwm-workspace-switch-create 3)))
+          ([?\s-4] . (lambda () (interactive) (exwm-workspace-switch-create 4)))
+          ([?\s-5] . (lambda () (interactive) (exwm-workspace-switch-create 5)))
+	  ([M-tab] . next-buffer)
+
+	  )
+	)
+
+  (exwm-enable)
+  )
+
+(use-package desktop-environment
+  :after exwm
+  :diminish desktop-environment-mode
+  :config (desktop-environment-mode)
+  :custom
+  (desktop-environment-brightness-small-increment "2%+")
+  (desktop-environment-brightness-small-decrement "2%-")
+  (desktop-environment-brightness-normal-increment "5%+")
+  (desktop-environment-brightness-normal-decrement "5%-"))
+
+(use-package diminish
+  :init
+  (diminish 'visual-line-mode)
+  )
 
 (use-package gruvbox-theme
   :config (load-theme 'gruvbox-dark-hard t))
 
 (use-package counsel
-  :config (counsel-mode))
+  :config (counsel-mode)
+  :diminish counsel-mode
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  )
 
 (use-package ivy
   :defer 0.1
@@ -137,6 +259,19 @@
   :after ivy
   :bind (("C-s" . swiper)))
 
+
+(defun my/evil-shift-right ()
+  (interactive)
+  (evil-shift-right evil-visual-beginning evil-visual-end)
+  (evil-normal-state)
+  (evil-visual-restore))
+
+(defun my/evil-shift-left ()
+  (interactive)
+  (evil-shift-left evil-visual-beginning evil-visual-end)
+  (evil-normal-state)
+  (evil-visual-restore))
+
 (use-package evil
   :bind ([remap evil-paste-pop] . counsel-yank-pop)
   :init
@@ -150,14 +285,12 @@
   (evil-define-key 'visual global-map (kbd ">") 'my/evil-shift-right)
   (evil-define-key 'visual global-map (kbd "<") 'my/evil-shift-left)
 
-  (define-key evil-normal-state-map (kbd "C-w i") 'evil-window-vsplit)
-  (define-key evil-normal-state-map (kbd "C-w u") 'evil-window-split)
-
   (evil-set-initial-state 'org-agenda-mode' normal)
   :demand)
 
 (use-package evil-collection
   :after evil
+  :diminish evil-collection-unimpaired-mode
   :custom (evil-collection-setup-minibuffer t)
   :config
   (evil-collection-init))
@@ -173,7 +306,9 @@
   :config (setq dired-dwim-target t)
           (setq delete-by-moving-to-trash t)
   :commands (dired dired-jump)
-  :bind (("C-x C-j" . dired-jump))
+  :bind (
+	 ("C-x C-j" . dired-jump)
+	 )
   :custom ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
@@ -205,10 +340,16 @@
     "H" 'dired-hide-dotfiles-mode))
 
 (use-package flycheck
-  :init (global-flycheck-mode)
+  :init (add-hook 'prog-mode-hook 'flycheck-mode)
   :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))) ;; DO NOT treat emacs config file as a package file
 
+(use-package flycheck-pos-tip
+  :after flycheck
+  :init (add-hook 'prog-mode-hook 'flycheck-pos-tip-mode)
+  )
+
 (use-package company
+  :diminish company-mode
   :config (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
@@ -272,12 +413,14 @@
   :init (doom-modeline-mode 1))
 
 (use-package beacon
+  :diminish beacon-mode
   :config (beacon-mode 1))
 
 (use-package goto-line-preview
   :bind ("C-l" . goto-line-preview))
 
 (use-package which-key
+  :diminish which-key-mode
   :config (which-key-mode 1))
 
 (use-package helpful
@@ -290,22 +433,22 @@
 
 (use-package magit)
 
-(use-package vterm
-  :commands vterm
-  :bind (("s-v" . vterm)
-	 ("<s-escape>" . vterm-send-escape)
-	 )
-  :config
-  (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
-  (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
-  (setq vterm-shell "bash")
-  (setq vterm-max-scrollback 10000)
-  )
+;; (use-package vterm
+;;   :commands vterm
+;;   :bind (("s-v" . vterm)
+;; 	 ("<s-escape>" . vterm-send-escape)
+;; 	 )
+;;   :config
+;;   (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
+;;   (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
+;;   (setq vterm-shell "bash")
+;;   (setq vterm-max-scrollback 10000)
+;;   )
 
 ;; ORG-mode
 (setq org-directory "~/org/GDT")
-(setq org-agenda-files (directory-files-recursively "~/Sync/GDT/" "\\.org$"))
-(setq org-archive-location "~/Sync/archive.org::* From %s")
+(setq org-agenda-files (directory-files-recursively "~/org/GDT/" "\\.org$"))
+(setq org-archive-location "~/org/archive.org::* From %s")
 (defvar org-enforce-todo-dependencies t)
 
 (add-hook 'org-mode-hook
@@ -316,26 +459,31 @@
 
 (defun org-mode-visual-fill ()
   (setq visual-fill-column-width 200
-        visual-fill-column-center-text t)
+        visual-fill-column-center-text t)(use-package flycheck-tip
+  :commands 'flycheck-tip-cycle
+  :after flycheck
+  :bind (:map flycheck-mode-map
+	      ("C-c C-n" . flycheck-tip-cycle))
+  )
+
+
   (visual-fill-column-mode 1))
 
 ;; TODO STATES
 (defvar org-todo-keywords
-    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "ACASA(a!/!)" "BIROU(b!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
+    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (defvar org-todo-keyword-faces
-    '(("FEATURE" .  "olive" )
-	("ACASA" .  "mediumPurple" )
+    '(("FEATURE" .  "mediumPurple" )
 	("CHECK" .  "DarkTurquoise" )
-	("BIROU" .  "blue" )
 	("HOLD" .  "orange" )
 	("DONE" . "Green")
 	("CANCELLED" .  "PaleGreen")))
 (setq org-fontify-done-headline t)
 
 ;; PRIORITIES
-(defvar org-highest-priority 49)
-(defvar org-lowest-priority 57)
-(defvar org-default-priority 53)
+(setq org-priority-lowest 67)
+(setq org-priority-highest 1)
+(setq org-priority-default 1)
 
 (use-package visual-fill-column
   :hook (org-mode . org-mode-visual-fill))
@@ -347,11 +495,9 @@
   :custom
   (org-superstar-todo-bullet-alist '(("DONE" . ?)
                                      ("FEATURE" . ?)
-                                     ("ACASA" . ?)
                                      ("CHECK" . ?)
                                      ("HOLD" . ?)
                                      ("CANCELLED" . ?)
-                                     ("BIROU" . ?)
                                      ("BUG" . ?)
                                      ))
   (org-superstar-headline-bullets-list '(""))
