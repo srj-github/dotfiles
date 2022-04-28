@@ -163,13 +163,14 @@
   (require 'exwm-randr)
   (exwm-randr-enable)
 
+  ;; Make external display get workspaces if plugged in, or laptop monitor if not.
   (add-hook 'exwm-randr-screen-change-hook
 	    (lambda()
-	      (sleep-for 5) ;; allow 5 seconds for the monitor to wake up
 	      (if (string= (efs/update-displays) "noExternalDisplay")
 		  (setq exwm-randr-workspace-monitor-plist '(0 "eDP-1" 1 "eDP-1" 2 "eDP-1" 3 "eDP-1" 4 "eDP-1" 5 "eDP-1" ))
 		(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 1 "HDMI-1" 2 "HDMI-1" 3 "HDMI-1" 4 "HDMI-1" 5 "eDP-1"))
 		)
+	      (exwm-randr-refresh)
 	      ))
 
   (setq exwm-workspace-number 6)
