@@ -8,9 +8,6 @@
 # . . . . . . . . . . . . . . . . . . . . .
 set -euo pipefail
 
-# Clone dotfiles folder
-git clone --recurse-submodules --remote-submodules https://github.com/srj-github/dotfiles ~/.dotfiles
-
 # Make symbolic links for each configuration file
 # bash
 ln -svf ~/.dotfiles/bash/bashrc ~/.bashrc
