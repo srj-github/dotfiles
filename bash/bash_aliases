@@ -13,6 +13,7 @@ alias shutdown='shutdown -h now'
 alias restart='shutdown -r now'
 
 alias vpn='sudo openvpn --config ~/.private/vpn.ovpn --auth-user-pass ~/.private/vpnPass'
+alias share='gio mount smb://192.168.0.254/share < ~/.private/gio'
 
 alias fs='du -hd1 | sort -h'
 
