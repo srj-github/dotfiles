@@ -7,9 +7,13 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+(defvar zrg/pak-folder (expand-file-name "packages" user-emacs-directory) "Global var for the packages folder")
+(add-to-list 'load-path zrg/pak-folder)
+
 (require 'dired-x)
 
-(defvar dired-sort-map (make-sparse-keymap))
+(defvar dired-sort-map (make-sparse-keymap)
+  )
 
 (define-key dired-mode-map (kbd "C-c s") dired-sort-map)
 
@@ -28,7 +32,13 @@
 
 (defun my-signature()
   (interactive)
-  (insert-file-contents "~/.emacs.d/signature"))
+  (insert-file-contents "~/.emacs.d/signature")
+  )
+
+(defun bash-term ()
+  (interactive)
+  (ansi-term "/bin/bash")
+  )
 
 ;; Startup
 
@@ -41,7 +51,8 @@
            (side . right)
            (slot . -1)
            (window-parameters . (no-delete-other-windows . t))))
-    (delete-window)))
+    (delete-window))
+  )
 
 (add-hook 'after-init-hook
 	  (lambda ()
@@ -49,7 +60,8 @@
 	    (find-file "~/org/start.org")
 	    (zrg/buffer-to-side-window)
 	    (other-window 1)
-	    ))
+	    )
+	  )
 
 ;;(setq inhibit-startup-message t)
 
@@ -92,8 +104,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-; Indent 2 spaces in js2
-(setq js-indent-level 2)
 ;; Display line-numbers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'column-number-mode)
@@ -112,122 +122,41 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 (unless package-archive-contents
-  (package-refresh-contents))
+  (package-refresh-contents)
+  )
 (unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+  (package-install 'use-package)
+  )
 
 ;; Use-package
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(defun efs/exwm-update-class ()
-  (exwm-workspace-rename-buffer exwm-class-name))
+;; List with all the packages that are loaded below.
+(defvar zrg/packages '("js2" "evil" "exwm"))
 
-(defun efs/run-in-background (command)
-  (let ((command-parts (split-string command "[ ]+")))
-    (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
-
-;; This function should be used only after configuring autorandr!
-;; Set the configuration for laptop screen only with "autorandr --save noExternalDisplay"
-(defun efs/update-displays ()
-  (efs/run-in-background "autorandr --change --force")
-  (message  
-   (string-trim (shell-command-to-string "autorandr --current")))
-  )
-
-(defun efs/exwm-init-hook ()
-
-  ;; Show the time and date in modeline
-  (setq display-time-day-and-date t)
-  (display-time-mode 1)
-  ;; Also take a look at display-time-format and format-time-string
-
-  ;; Launch apps that will run in the background
-  (efs/run-in-background "nm-applet")
-  (efs/run-in-background "pasystray")
-  (efs/run-in-background "blueman-applet")
-
-  (display-battery-mode 1)
-
-  (setq display-time-24hr-format t)
-  (display-time-mode 1)
-  
-
-  (setq mouse-autoselect-window t
-	focus-follows-mouse t)
-  )
-
-(use-package exwm
-  :bind ("s-x" . 'counsel-linux-app)
-  :config
-  (require 'exwm-randr)
-  (exwm-randr-enable)
-
-  ;; Make external display get workspaces if plugged in, or laptop monitor if not.
-  (add-hook 'exwm-randr-screen-change-hook
-	    (lambda()
-	      (if (string= (efs/update-displays) "noExternalDisplay")
-		  (setq exwm-randr-workspace-monitor-plist '(0 "eDP-1" 1 "eDP-1" 2 "eDP-1" 3 "eDP-1" 4 "eDP-1" 5 "eDP-1" ))
-		(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 1 "HDMI-1" 2 "HDMI-1" 3 "HDMI-1" 4 "HDMI-1" 5 "eDP-1"))
-		)
-	      (exwm-randr-refresh)
-	      ))
-
-  (setq exwm-workspace-number 6)
-  (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-
-  ;; When window "class" updates, use it to set the buffer name
-  (add-hook 'exwm-update-class-hook #'efs/exwm-update-class)
-
-  ;; When EXWM starts up, do some extra confifuration
-  (add-hook 'exwm-init-hook #'efs/exwm-init-hook)
-
-  ;; (require 'exwm-systemtray)
-  ;; (exwm-systemtray-enable)
-
-  ;;(start-file-process-shell-command "firefox" nil "firefox")
-
-  ;; Remap CapsLock to Ctrl
-  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/emacs/Xmodmap")
-
-
-  (setq exwm-input-prefix-keys
-	'(
-	  ?\C-w
-	  ?\C-x
-	  ?\M-x
+(dolist (file zrg/packages)
+  (if (or (file-exists-p(concat zrg/pak-folder "/" file "-zrg-setup.el"))
+	  (file-exists-p(concat zrg/pak-folder "/" file "-zrg-setup.elc"))
 	  )
-	)
-  (setq exwm-input-global-keys
-	'(
-          ;; Reset to line-mode (C-c C-k switches to char-mode via exwm-input-release-keyboard)
-          ([?\s-r] . exwm-reset)
-
-          ;; Switch workspace
-          ([?\s-w] . exwm-workspace-switch)
-          ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
-          ([?\s-1] . (lambda () (interactive) (exwm-workspace-switch-create 1)))
-          ([?\s-2] . (lambda () (interactive) (exwm-workspace-switch-create 2)))
-          ([?\s-3] . (lambda () (interactive) (exwm-workspace-switch-create 3)))
-          ([?\s-4] . (lambda () (interactive) (exwm-workspace-switch-create 4)))
-          ([?\s-5] . (lambda () (interactive) (exwm-workspace-switch-create 5)))
-	  ([M-tab] . next-buffer)
-
-	  )
-	)
-
-  (exwm-enable)
+      (require (intern (concat file "-zrg-setup")))
+    (message (concat "Package " file "was removed"))
+    )
   )
 
 (use-package desktop-environment
-  :after exwm
-  :diminish desktop-environment-mode
-  :config (desktop-environment-mode)
+  :after
+  exwm
+  :diminish
+  desktop-environment-mode
+  :config
+  (desktop-environment-mode)
   :custom
   (desktop-environment-brightness-small-increment "2%+")
   (desktop-environment-brightness-small-decrement "2%-")
   (desktop-environment-brightness-normal-increment "5%+")
-  (desktop-environment-brightness-normal-decrement "5%-"))
+  (desktop-environment-brightness-normal-decrement "5%-")
+  )
 
 (use-package diminish
   :init
@@ -235,11 +164,15 @@
   )
 
 (use-package gruvbox-theme
-  :config (load-theme 'gruvbox-dark-hard t))
+  :config
+  (load-theme 'gruvbox-dark-hard t)
+  )
 
 (use-package counsel
-  :config (counsel-mode)
-  :diminish counsel-mode
+  :config
+  (counsel-mode)
+  :diminish
+  counsel-mode
   :custom
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
   )
@@ -247,204 +180,222 @@
 (use-package ivy
   :defer 0.1
   :diminish
-  :bind (("C-x B" . ivy-switch-buffer-other-window))
+  :bind
+  (("C-x B" . ivy-switch-buffer-other-window))
   :custom
   (ivy-count-format "%d/%d")
   (ivy-use-virtual-buffers t)
-  :config (ivy-mode 1))
+  :config
+  (ivy-mode 1)
+  )
 
 (use-package ivy-rich
-  :init (ivy-rich-mode 1))
+  :init
+  (ivy-rich-mode 1)
+  )
 
 (use-package swiper
-  :after ivy
-  :bind (("C-s" . swiper)))
+  :after
+  ivy
+  :bind
+  (("C-s" . swiper))
+  )
 
-
-(defun my/evil-shift-right ()
-  (interactive)
-  (evil-shift-right evil-visual-beginning evil-visual-end)
-  (evil-normal-state)
-  (evil-visual-restore))
-
-(defun my/evil-shift-left ()
-  (interactive)
-  (evil-shift-left evil-visual-beginning evil-visual-end)
-  (evil-normal-state)
-  (evil-visual-restore))
-
-(use-package evil
-  :bind ([remap evil-paste-pop] . counsel-yank-pop)
-  :init
-  (setq evil-want-keybinding nil)
-  (setq evil-want-integration t)
-  :config 
-  (evil-mode 1)
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-define-key 'visual global-map (kbd ">") 'my/evil-shift-right)
-  (evil-define-key 'visual global-map (kbd "<") 'my/evil-shift-left)
-
-  (evil-set-initial-state 'org-agenda-mode' normal)
-  :demand)
-
-(use-package evil-collection
-  :after evil
-  :diminish evil-collection-unimpaired-mode
-  :custom (evil-collection-setup-minibuffer t)
-  :config
-  (evil-collection-init))
-
-(use-package evil-multiedit
-  :bind (("M-r" . evil-multiedit-match-all)
-	 ("M-d" . evil-multiedit-match-and-next)
-	 ("M-D" . evil-multiedit-match-and-prev)))
 
 (use-package dired
-  :after evil
-  :ensure nil
-  :config (setq dired-dwim-target t)
-          (setq delete-by-moving-to-trash t)
-  :commands (dired dired-jump)
-  :bind (
-	 ("C-x C-j" . dired-jump)
-	 )
-  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :after
+  evil
+  :ensure
+  nil
+  :config
+  (setq dired-dwim-target t)
+  (setq delete-by-moving-to-trash t)
+  :commands
+  (dired dired-jump)
+  :bind
+  (("C-x C-j" . dired-jump))
+  :custom
+  ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer))
+    "l" 'dired-single-buffer)
+  )
+
+(use-package sudo-edit)
 
 (use-package dired-du
-  :bind (("s-z" . dired-du-mode))
+  :bind
+  (
+   ("s-z" . dired-du-mode)
+   )
   :config
   (setq dired-du-size-format t)
   )
 
 (use-package dired-open
-  :after dired
+  :after
+  dired
   :config
   (add-to-list 'dired-open-functions #'dired-open-xdg t)
   )
 
 (use-package dired-single
-  :commands (dired dired-jump))
+  :commands
+  (dired dired-jump)
+  )
 
 (use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
+  :hook
+  (dired-mode . all-the-icons-dired-mode)
+  )
 
 (use-package dired-hide-dotfiles
-  :hook (dired-mode . dired-hide-dotfiles-mode)
+  :hook
+  (dired-mode . dired-hide-dotfiles-mode)
   :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "H" 'dired-hide-dotfiles-mode))
+  (evil-collection-define-key 'normal 'dired-mode-map "H" 'dired-hide-dotfiles-mode)
+  )
+
+(use-package dired-rsync
+  :config
+  (bind-key "C-c C-r" 'dired-rsync dired-mode-map)
+  )
 
 (use-package flycheck
-  :init (add-hook 'prog-mode-hook 'flycheck-mode)
-  :config (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))) ;; DO NOT treat emacs config file as a package file
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)) ;; DO NOT treat emacs config file as a package file
+  ) 
 
 (use-package flycheck-pos-tip
-  :after flycheck
-  :init (add-hook 'prog-mode-hook 'flycheck-pos-tip-mode)
+  :after
+  flycheck
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-pos-tip-mode)
   )
 
 (use-package company
-  :diminish company-mode
-  :config (add-hook 'after-init-hook 'global-company-mode))
+  :diminish
+  company-mode
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  )
 
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-ivy
+  :commands
+  lsp-ivy-workspace-symbol
+  )
 
 (use-package web-mode
-  :config  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-	   (add-to-list 'auto-mode-alist '("\\.css?\\'" . css-mode))
-	   (add-to-list 'auto-mode-alist '("\\.hbs?\\'" . web-mode))
-	   (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
-	   (setq web-mode-engines-alist '(("ctemplate" . "\\.hbs\\'")))
-  :custom  (web-mode-enable-current-column-highlight nil)
-	   (web-mode-enable-current-element-highlight nil))
+  :config
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css?\\'" . css-mode))
+  (add-to-list 'auto-mode-alist '("\\.hbs?\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.php?\\'" . web-mode))
+  (setq web-mode-engines-alist '(("ctemplate" . "\\.hbs\\'")))
+  :custom
+  (web-mode-enable-current-column-highlight nil)
+  (web-mode-enable-current-element-highlight nil)
+  )
 
-(use-package js2-mode
-  :config (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-          (add-to-list 'auto-mode-alist '("\\.ts\\'" . js2-mode))
-          (setq js2-include-node-externs t)
-	  (setq js2-highlight-level 3)
-	  )
 (defvar lsp-enable-file-watchers nil) ; disable file watchers to bypass "too many files" error 
 
 (use-package emmet-mode
-  :config (add-hook 'web-mode-hook 'emmet-mode)
+  :config
+  (add-hook 'web-mode-hook 'emmet-mode)
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
   (add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
   (add-to-list 'emmet-jsx-major-modes 'rjsx-mode)
-  (add-hook 'rjsx-mode-hook 'emmet-mode))
+  (add-hook 'rjsx-mode-hook 'emmet-mode)
+  )
 
-(setq lsp-keymap-prefix "s-l")
 (use-package lsp-mode
-    :hook (python-mode . lsp-deferred) ;; make sure pyls is in path ~/.local/bin
-    :hook (web-mode . lsp-deferred) 
-    :hook (css-mode . lsp-deferred) 
-    :hook (js2-mode . lsp-deferred) 
-    :hook (js-jsx-mode . lsp-deferred) 
-    :config (add-to-list 'lsp-language-id-configuration '(js-jsx-mode . "javascript"))
-    :commands (lsp lsp-deferred))
+  :hook
+  (python-mode . lsp-deferred) ;; make sure pyls is in path ~/.local/bin
+  (web-mode . lsp-deferred) 
+  (css-mode . lsp-deferred) 
+  (js2-mode . lsp-deferred) 
+  (js-jsx-mode . lsp-deferred) 
+  :config
+  (add-to-list 'lsp-language-id-configuration '(js-jsx-mode . "javascript"))
+  (setq lsp-keymap-prefix "s-p")
+  :commands
+  (lsp lsp-deferred)
+  )
 
 (use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :config (setq lsp-ui-flycheck-enable t)
-  	  (setq lsp-ui-sideline-show-flycheck t)
-	  (setq lsp-ui-sideline-show-diagnostics t)
-          (setq lsp-ui-sideline-show-code-actions t))
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-flycheck-enable t)
+  (setq lsp-ui-sideline-show-flycheck t)
+  (setq lsp-ui-sideline-show-diagnostics t)
+  (setq lsp-ui-sideline-show-code-actions t)
+  )
 
 (use-package highlight-indent-guides
   :diminish
-  :config (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-          (setq highlight-indent-guides-method 'character))
+  :config
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'character)
+  )
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :hook (prog-mode . show-paren-mode))
+  :hook
+  (prog-mode . rainbow-delimiters-mode)
+  (prog-mode . show-paren-mode)
+  )
 
 (use-package smartparens
-  :hook (prog-mode . smartparens-mode))
+  :hook
+  (prog-mode . smartparens-mode)
+  )
 
 (use-package doom-modeline
-  :custom ((doom-modeline-minor-modes t)
-	   (doom-modeline-enable-word-count t))
-  :init (doom-modeline-mode 1))
+  :config
+  (setq doom-modeline-minor-modes t)
+  (setq doom-modeline-enable-word-count t)
+  (setq doom-modeline-modal-icon t)
+  :init
+  (doom-modeline-mode 1)
+  )
 
 (use-package beacon
-  :diminish beacon-mode
-  :config (beacon-mode 1))
+  :diminish
+  beacon-mode
+  :config
+  (beacon-mode 1)
+  )
 
 (use-package goto-line-preview
-  :bind ("C-l" . goto-line-preview))
+  :bind
+  ("C-l" . goto-line-preview)
+  )
 
 (use-package which-key
-  :diminish which-key-mode
-  :config (which-key-mode 1))
+  :diminish
+  which-key-mode
+  :config
+  (which-key-mode 1)
+  )
 
 (use-package helpful
-  :custom (counsel-describe-function-function #'helpful-callable)
-          (counsel-describe-variable-function #'helpful-variable)
-  :bind   ([remap describe-key] . helpful-key))
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-key] . helpful-key)
+	  )
 
 (use-package yascroll
-  :config (global-yascroll-bar-mode 1))
+  :config (global-yascroll-bar-mode 1)
+  )
 
-(use-package magit)
-
-;; (use-package vterm
-;;   :commands vterm
-;;   :bind (("s-v" . vterm)
-;; 	 ("<s-escape>" . vterm-send-escape)
-;; 	 )
-;;   :config
-;;   (evil-define-key 'insert vterm-mode-map (kbd "<f6>") #'rename-buffer)
-;;   (setq term-prompt-regexp "^[^#$%>\\n]*[#$%>] *")
-;;   (setq vterm-shell "bash")
-;;   (setq vterm-max-scrollback 10000)
-;;   )
+(use-package magit
+  :bind ("C-x g" . magit)
+  )
 
 ;; ORG-mode
 (setq org-directory "~/org/GDT")
@@ -460,14 +411,7 @@
 
 (defun org-mode-visual-fill ()
   (setq visual-fill-column-width 200
-        visual-fill-column-center-text t)(use-package flycheck-tip
-  :commands 'flycheck-tip-cycle
-  :after flycheck
-  :bind (:map flycheck-mode-map
-	      ("C-c C-n" . flycheck-tip-cycle))
-  )
-
-
+        visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 ;; TODO STATES
