@@ -216,7 +216,7 @@ bar {
 }
  
 # Wallpaper settings
-exec_always feh --bg-fill  --randomize /home/zrg/wallpapers/3440x1440
+exec_always --no-startup-id feh --bg-fill  --randomize /home/zrg/wallpapers/3440x1440
 
 # You can also use any non-zero value if you'd like to have a border
 for_window [class=".*"] border pixel 1
@@ -225,11 +225,11 @@ client.focused #555555 #555555 #ffffff #2e9ef4     #CC0000
 
 gaps inner 10
 
-exec picom
+exec --no-startup-id picom
 
 # Bind Caps to CTRL
 exec --no-startup-id /usr/bin/setxkbmap -option "ctrl:nocaps"
-bindsym $mod+b exec setxkbmap -option "ctrl:nocaps"
+bindsym $mod+b exec --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Monitor setup
 set $laptop "eDP"
@@ -238,16 +238,17 @@ set $external "HDMI-A-0"
 workspace 10 output $laptop
 workspace 1 output $external
 
-bindsym $mod+p exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/display.sh
-
-exec kitty bashtop
+exec --no-startup-id kitty bashtop
 assign [class="kitty"] 10
 exec --no-startup-id sleep 1; i3-msg workspace 1
 
-exec flameshot
-exec pasystray
+exec --no-startup-id flameshot
+exec --no-startup-id pasystray
+
+bindsym $mod+p exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/display.sh
+exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/startup_set_display.sh
 
 # My bindings
 
-bindsym $mod+BackSpace exec emacsclient -c 
+bindsym $mod+BackSpace exec --no-startup-id emacsclient -c
 bindsym $mod+z focus child
