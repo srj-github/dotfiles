@@ -9,7 +9,7 @@
 INTERNAL_OUTPUT="eDP"
 
 # choices will be displayed in dmenu
-choices="laptop\ndual\nexternal\nclone"
+choices="laptop\ndual-right\ndual-left\nexternal\nclone"
                                       
 # Your choice in dmenu will determine what xrandr command to run
 chosen=$(echo -e $choices | dmenu -i)
@@ -25,5 +25,6 @@ case "$chosen" in
     external) xrandr --output $INTERNAL_OUTPUT --off --output $EXTERNAL_OUTPUT --auto --primary ;;
     laptop) xrandr --output $INTERNAL_OUTPUT --auto --primary --output $EXTERNAL_OUTPUT --off ;;
     clone) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --same-as $INTERNAL_OUTPUT ;;
-    dual) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT --primary ;;
+    dual-right) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --left-of $INTERNAL_OUTPUT --primary ;;
+    dual-left) xrandr --output $INTERNAL_OUTPUT --auto --output $EXTERNAL_OUTPUT --auto --right-of $INTERNAL_OUTPUT --primary ;;
 esac
