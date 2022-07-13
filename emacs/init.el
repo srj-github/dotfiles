@@ -7,63 +7,29 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+
 (defvar zrg/pak-folder (expand-file-name "packages" user-emacs-directory) "Global var for the packages folder")
 (add-to-list 'load-path zrg/pak-folder)
 
-(require 'dired-x)
+;;(require 'dired-x)
 
-(defvar dired-sort-map (make-sparse-keymap)
-  )
+(winner-mode 1)
 
-(define-key dired-mode-map (kbd "C-c s") dired-sort-map)
+(defvar dired-sort-map (make-sparse-keymap))
 
-(define-key dired-sort-map "s" (lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S"))))
-(define-key dired-sort-map "x" (lambda () "sort by eXtension" (interactive) (dired-sort-other (concat dired-listing-switches " -X"))))
-(define-key dired-sort-map "t" (lambda () "sort by Time" (interactive) (dired-sort-other (concat dired-listing-switches " -t"))))
-(define-key dired-sort-map "n" (lambda () "sort by Name" (interactive) (dired-sort-other dired-listing-switches)))
-(define-key dired-sort-map "?" (lambda () "sort help" (interactive) (message "s Size; x eXtension; t Time; n Name")))
+;; (define-key dired-mode-map (kbd "C-c s") dired-sort-map)
 
-(provide 'dired-sort-map)
+;; (define-key dired-sort-map "s" (lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S"))))
+;; (define-key dired-sort-map "x" (lambda () "sort by eXtension" (interactive) (dired-sort-other (concat dired-listing-switches " -X"))))
+;; (define-key dired-sort-map "t" (lambda () "sort by Time" (interactive) (dired-sort-other (concat dired-listing-switches " -t"))))
+;; (define-key dired-sort-map "n" (lambda () "sort by Name" (interactive) (dired-sort-other dired-listing-switches)))
+;; (define-key dired-sort-map "?" (lambda () "sort help" (interactive) (message "s Size; x eXtension; t Time; n Name")))
 
-(defun emacs-startup-screen ()
-;;  "Display the weekly org-agenda and all todos."
-  (org-agenda nil "a")
-  )
-
-(defun my-signature()
-  (interactive)
-  (insert-file-contents "~/.emacs.d/signature")
-  )
-
-(defun bash-term ()
-  (interactive)
-  (ansi-term "/bin/bash")
-  )
+;; (provide 'dired-sort-map)
 
 ;; Startup
 
-(defun zrg/buffer-to-side-window ()
-  "Place the current buffer in the side window at the right."
-  (interactive)
-  (let ((buf (current-buffer)))
-    (display-buffer-in-side-window
-     buf '((window-width . 0.10)
-           (side . right)
-           (slot . -1)
-           (window-parameters . (no-delete-other-windows . t))))
-    (delete-window))
-  )
-
-(add-hook 'after-init-hook
-	  (lambda ()
-
-	    (find-file "~/org/start.org")
-	    (zrg/buffer-to-side-window)
-	    (other-window 1)
-	    )
-	  )
-
-;;(setq inhibit-startup-message t)
+(setq inhibit-startup-message t)
 
 (setq inhibit-default-init t)
 
@@ -89,8 +55,6 @@
 
 ;; Key-bindings
 (global-set-key (kbd "<f10>") 'org-agenda)
-;; just a function to display my ASCII art signature
-(global-set-key (kbd "<f5>") 'my-signature)
 
 ;; Set Custom file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -133,7 +97,12 @@
 (setq use-package-always-ensure t)
 
 ;; List with all the packages that are loaded below.
-(defvar zrg/packages '("js2" "evil" "exwm"))
+(defvar zrg/packages '(
+		       "js2"
+		       "evil"
+		       "doom-modeline"
+		       )
+  )
 
 (dolist (file zrg/packages)
   (if (or (file-exists-p(concat zrg/pak-folder "/" file "-zrg-setup.el"))
@@ -144,23 +113,19 @@
     )
   )
 
-(use-package desktop-environment
-  :after
-  exwm
-  :diminish
-  desktop-environment-mode
+(use-package dashboard
   :config
-  (desktop-environment-mode)
-  :custom
-  (desktop-environment-brightness-small-increment "2%+")
-  (desktop-environment-brightness-small-decrement "2%-")
-  (desktop-environment-brightness-normal-increment "5%+")
-  (desktop-environment-brightness-normal-decrement "5%-")
+  (setq dashboard-banner-logo-title "ZRG")
+  (setq dashboard-startup-banner "~/.dotfiles/00_assets/logo_roundedCorners.png")
+  (setq dashboard-center-content t)
+  (setq dashboard-set-init-info t)
+  (dashboard-setup-startup-hook)
   )
 
 (use-package diminish
   :init
   (diminish 'visual-line-mode)
+  (diminish 'org-indent-mode)
   )
 
 (use-package gruvbox-theme
@@ -178,38 +143,43 @@
   )
 
 (use-package ivy
+  :commands ivy-switch-buffer-other-window
   :defer 0.1
   :diminish
   :bind
   (("C-x B" . ivy-switch-buffer-other-window))
   :custom
-  (ivy-count-format "%d/%d")
+  (ivy-count-format "%d/%d ")
   (ivy-use-virtual-buffers t)
   :config
   (ivy-mode 1)
   )
 
 (use-package ivy-rich
+  :after ivy
   :init
   (ivy-rich-mode 1)
+  :config
+  (setq ivy-rich-parse-remote-buffer nil)
   )
 
 (use-package swiper
-  :after
-  ivy
+  :after ivy
   :bind
   (("C-s" . swiper))
   )
 
 
 (use-package dired
-  :after
-  evil
+  :after evil
   :ensure
   nil
   :config
   (setq dired-dwim-target t)
   (setq delete-by-moving-to-trash t)
+  (setq trash-directory "~/Trash")
+  (setq dired-kill-when-opening-new-dired-buffer t)
+  (setq global-auto-revert-non-file-buffers t)
   :commands
   (dired dired-jump)
   :bind
@@ -218,13 +188,15 @@
   ((dired-listing-switches "-agho --group-directories-first"))
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer)
+    "h" 'dired-up-directory
+    "l" 'dired-find-alternate-file
+    )
   )
 
 (use-package sudo-edit)
 
 (use-package dired-du
+  :commands dired-du-mode
   :bind
   (
    ("s-z" . dired-du-mode)
@@ -240,17 +212,13 @@
   (add-to-list 'dired-open-functions #'dired-open-xdg t)
   )
 
-(use-package dired-single
-  :commands
-  (dired dired-jump)
-  )
-
 (use-package all-the-icons-dired
   :hook
   (dired-mode . all-the-icons-dired-mode)
   )
 
 (use-package dired-hide-dotfiles
+  :after dired
   :hook
   (dired-mode . dired-hide-dotfiles-mode)
   :config
@@ -258,6 +226,7 @@
   )
 
 (use-package dired-rsync
+  :after dired
   :config
   (bind-key "C-c C-r" 'dired-rsync dired-mode-map)
   )
@@ -321,6 +290,7 @@
   :config
   (add-to-list 'lsp-language-id-configuration '(js-jsx-mode . "javascript"))
   (setq lsp-keymap-prefix "s-p")
+  (setq lsp-pylsp-plugins-pydocstyle-ignore ["D100, D101, D102, D107"])
   :commands
   (lsp lsp-deferred)
   )
@@ -353,15 +323,6 @@
   (prog-mode . smartparens-mode)
   )
 
-(use-package doom-modeline
-  :config
-  (setq doom-modeline-minor-modes t)
-  (setq doom-modeline-enable-word-count t)
-  (setq doom-modeline-modal-icon t)
-  :init
-  (doom-modeline-mode 1)
-  )
-
 (use-package beacon
   :diminish
   beacon-mode
@@ -370,6 +331,7 @@
   )
 
 (use-package goto-line-preview
+  :commands goto-line-preview
   :bind
   ("C-l" . goto-line-preview)
   )
@@ -394,6 +356,7 @@
   )
 
 (use-package magit
+  :commands magit
   :bind ("C-x g" . magit)
   )
 
@@ -452,3 +415,4 @@
 
 ;; Set comments color to a nice green
 (set-face-foreground 'font-lock-comment-face "spring green")
+(put 'dired-find-alternate-file 'disabled nil)

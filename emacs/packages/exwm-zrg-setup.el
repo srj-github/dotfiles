@@ -17,24 +17,14 @@
 
 (defun efs/exwm-init-hook ()
 
-  ;; Show the time and date in modeline
-  (setq display-time-day-and-date t)
-  (display-time-mode 1)
-  ;; Also take a look at display-time-format and format-time-string
-
   ;; Launch apps that will run in the background
   (efs/run-in-background "nm-applet")
   (efs/run-in-background "pasystray")
   (efs/run-in-background "blueman-applet")
+  (efs/run-in-background "flameshot")
 
-  (display-battery-mode 1)
-
-  (setq display-time-24hr-format t)
-  (display-time-mode 1)
-  
   (setq mouse-autoselect-window t
 	focus-follows-mouse t)
-
 
   (start-process "terminator" nil "terminator")
   (start-process "thunderbird" nil "thunderbird")
@@ -47,7 +37,7 @@
   (dired "~/code")
   (evil-window-split)
   (evil-window-down 1)
-  (funcall 'bash-term)
+  (vterm "~/code")
   (exwm-layout-shrink-window 450)
   (exwm-workspace-switch 0)
   )
@@ -74,7 +64,7 @@
 	    (lambda()
 	      (if (string= (efs/update-displays) "noExternalDisplay")
 		  (setq exwm-randr-workspace-monitor-plist '(0 "eDP-1" 1 "eDP-1" 2 "eDP-1" 3 "eDP-1" 4 "eDP-1" 5 "eDP-1" ))
-		(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1" 1 "HDMI-1" 2 "HDMI-1" 3 "HDMI-1" 4 "HDMI-1" 5 "eDP-1"))
+		(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-A-0" 1 "HDMI-A-0" 2 "HDMI-A-0" 3 "HDMI-A-0" 4 "HDMI-A-0" 5 "eDP-1"))
 		)
 	      (exwm-randr-refresh)
 	      ))
@@ -98,11 +88,13 @@
   ;; When window title updates, use it to set the buffer name
   (add-hook 'exwm-update-title-hook #'efs/exwm-update-title)
 
-  (require 'exwm-systemtray)
-  (exwm-systemtray-enable)
-
   ;; Remap CapsLock to Ctrl
-  (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/emacs/Xmodmap")
+  (defun bind-caps-to-ctrl ()
+      (interactive)
+    (start-process-shell-command "xmodmap" nil "xmodmap ~/.dotfiles/emacs/Xmodmap")
+      )
+
+  (bind-caps-to-ctrl)
 
   (setq exwm-input-prefix-keys
 	'(
@@ -125,7 +117,7 @@
           ([?\s-4] . (lambda () (interactive) (exwm-workspace-switch-create 4)))
           ([?\s-5] . (lambda () (interactive) (exwm-workspace-switch-create 5)))
 	  ([M-tab] . next-buffer)
-	  ([?\s-t] . bash-term)
+	  ([?\s-t] . vterm)
 	  ([?\s-x] . counsel-linux-app)
 
 	  )

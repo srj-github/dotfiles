@@ -4,3 +4,6 @@
 [submodule "02_submodules/liquidprompt"]
 	path = 02_submodules/liquidprompt
 	url = https://github.com/nojhan/liquidprompt
+[submodule "00_assets/icons/Nordzy-cursors"]
+	path = 00_assets/icons/Nordzy-cursors
+	url = https://github.com/alvatip/Nordzy-cursors
