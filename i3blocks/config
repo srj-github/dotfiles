@@ -1,10 +1,16 @@
 # Update time every 5 seconds
+[cpu_temp]
+label= 
+interval=1
+command=/home/zrg/.dotfiles/i3blocks/scripts/cpu_temp.sh
+
+[fan_speed]
+label= 
+interval=1
+command=/home/zrg/.dotfiles/i3blocks/scripts/cpu_fan.sh
+
 [time]
 label= 
-command=date +%T
+command=date "+%a %e/%m/%y |  %T"
 interval=5
 
-[cpu]
-label=
-command=/usr/libexec/i3blocks/cpu_usage
-interval=1
