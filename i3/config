@@ -244,11 +244,14 @@ exec --no-startup-id sleep 1; i3-msg workspace 1
 
 exec --no-startup-id flameshot
 exec --no-startup-id pasystray
+exec --no-startup-id blueman-applet
+exec --no-startup-id sleep 2; emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
+
 
 bindsym $mod+p exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/display.sh
 exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/startup_set_display.sh
 
 # My bindings
 
-bindsym $mod+BackSpace exec --no-startup-id emacsclient -c
+bindsym $mod+BackSpace exec --no-startup-id emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
 bindsym $mod+z focus child

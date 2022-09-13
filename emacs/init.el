@@ -378,11 +378,15 @@
   (visual-fill-column-mode 1))
 
 ;; TODO STATES
+
+;; BUG and FEATURE are used inside PROJECTS (sub headers) and are not displayed in (org-agenda n)
 (defvar org-todo-keywords
-    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
+    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "PROJECT(p!/!)" "TASK(t!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (defvar org-todo-keyword-faces
     '(("FEATURE" .  "mediumPurple" )
 	("CHECK" .  "DarkTurquoise" )
+	("PROJECT" .  "MediumSeaGreen" )
+	("TASK" .  "LightSeaGreen" )
 	("HOLD" .  "orange" )
 	("DONE" . "Green")
 	("CANCELLED" .  "PaleGreen")))
@@ -403,6 +407,8 @@
   :custom
   (org-superstar-todo-bullet-alist '(("DONE" . ?)
                                      ("FEATURE" . ?)
+                                     ("PROJECT" . ?)
+                                     ("TASK" . ?)
                                      ("CHECK" . ?)
                                      ("HOLD" . ?)
                                      ("CANCELLED" . ?)

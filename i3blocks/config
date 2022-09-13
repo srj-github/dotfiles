@@ -1,4 +1,8 @@
-# Update time every 5 seconds
+[updates]
+label=Updates: 
+command=/home/zrg/.dotfiles/i3blocks/scripts/checkUpdates.sh
+interval=once
+
 [cpu_temp]
 label= 
 interval=1
@@ -12,5 +16,6 @@ command=/home/zrg/.dotfiles/i3blocks/scripts/cpu_fan.sh
 [time]
 label= 
 command=date "+%a %e/%m/%y |  %T"
-interval=5
+interval=1
+
 
