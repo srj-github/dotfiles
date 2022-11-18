@@ -113,14 +113,14 @@
     )
   )
 
-(use-package dashboard
-  :config
-  (setq dashboard-banner-logo-title "ZRG")
-  (setq dashboard-startup-banner "~/.dotfiles/00_assets/logo_roundedCorners.png")
-  (setq dashboard-center-content t)
-  (setq dashboard-set-init-info t)
-  (dashboard-setup-startup-hook)
-  )
+;; (use-package dashboard
+;;   :config
+;;   (setq dashboard-banner-logo-title "ZRG")
+;;   (setq dashboard-startup-banner "~/.dotfiles/00_assets/logo_roundedCorners.png")
+;;   (setq dashboard-center-content t)
+;;   (setq dashboard-set-init-info t)
+;;   (dashboard-setup-startup-hook)
+;;   )
 
 (use-package diminish
   :init
