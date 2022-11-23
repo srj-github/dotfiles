@@ -17,7 +17,7 @@ fi
 
 export LP_ENABLE_SHLVL=0
 # Only load Liquid Prompt in interactive shells, not from a script or from scp
-[[ $- = *i* ]] && source ~/.dotfiles/02_submodules/liquidprompt/liquidprompt
+[[ $- = *i* ]] && source ~/.dotfiles/01_assets/liquidprompt/liquidprompt
 
 export PATH="$HOME/bin:$HOME/.local/bin/:$PATH"
 
