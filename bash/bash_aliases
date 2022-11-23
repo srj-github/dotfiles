@@ -25,7 +25,7 @@ alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
 alias lamp=' sudo docker run -i -t -p "80:80" -v ${PWD}/app:/app -v ${PWD}/mysql:/var/lib/mysql mattrayner/lamp:latest'
 
-alias checkzswap='grep -R . /sys/kernel/debug/zswap'
+alias e='emacsclient'
 
 git-diff() {
 	if [ "$1" = "last" ]; then
