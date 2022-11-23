@@ -7,6 +7,17 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+(defvar org-todo-keywords
+    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "PROJECT(p!/!)" "TASK(t!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
+(defvar org-todo-keyword-faces
+    '(("FEATURE" .  "mediumPurple" )
+	("CHECK" .  "DarkTurquoise" )
+	("PROJECT" .  "MediumSeaGreen" )
+	("TASK" .  "LightSeaGreen" )
+	("HOLD" .  "orange" )
+	("DONE" . "Green")
+	("CANCELLED" .  "PaleGreen")))
+(setq org-fontify-done-headline t)
 
 (defvar zrg/pak-folder (expand-file-name "packages" user-emacs-directory) "Global var for the packages folder")
 (add-to-list 'load-path zrg/pak-folder)
@@ -32,6 +43,11 @@
 (setq inhibit-startup-message t)
 
 (setq inhibit-default-init t)
+
+;; active Babel languages
+(org-babel-do-load-languages
+'org-babel-load-languages
+'((shell . t)))
 
 ;; Disable bars
 (scroll-bar-mode -1)
@@ -112,15 +128,6 @@
     (message (concat "Package " file "was removed"))
     )
   )
-
-;; (use-package dashboard
-;;   :config
-;;   (setq dashboard-banner-logo-title "ZRG")
-;;   (setq dashboard-startup-banner "~/.dotfiles/00_assets/logo_roundedCorners.png")
-;;   (setq dashboard-center-content t)
-;;   (setq dashboard-set-init-info t)
-;;   (dashboard-setup-startup-hook)
-;;   )
 
 (use-package diminish
   :init
@@ -378,19 +385,6 @@
   (visual-fill-column-mode 1))
 
 ;; TODO STATES
-
-;; BUG and FEATURE are used inside PROJECTS (sub headers) and are not displayed in (org-agenda n)
-(defvar org-todo-keywords
-    '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "PROJECT(p!/!)" "TASK(t!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
-(defvar org-todo-keyword-faces
-    '(("FEATURE" .  "mediumPurple" )
-	("CHECK" .  "DarkTurquoise" )
-	("PROJECT" .  "MediumSeaGreen" )
-	("TASK" .  "LightSeaGreen" )
-	("HOLD" .  "orange" )
-	("DONE" . "Green")
-	("CANCELLED" .  "PaleGreen")))
-(setq org-fontify-done-headline t)
 
 ;; PRIORITIES
 (setq org-priority-lowest 67)
