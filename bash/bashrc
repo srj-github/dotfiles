@@ -15,6 +15,7 @@ fi
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+export LP_ENABLE_SHLVL=0
 # Only load Liquid Prompt in interactive shells, not from a script or from scp
 [[ $- = *i* ]] && source ~/.dotfiles/02_submodules/liquidprompt/liquidprompt
 
