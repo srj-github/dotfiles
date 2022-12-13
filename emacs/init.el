@@ -23,6 +23,40 @@
 (add-to-list 'load-path zrg/pak-folder)
 
 ;;(require 'dired-x)
+(defun add-comment (choice)
+  "Add helpful comments for different languages, acording to CHOICE "
+  (interactive
+   (list (completing-read "Choose: "
+                          '(("js" . "js") ("bash" . "bash")) nil t)))
+  (if (string= choice "js")
+      (insert "
+/**
+ * Summary.
+ *
+ * Description.
+ *
+ * @since      x.x.x
+ * @deprecated x.x.x Use new_function_name() instead.
+ *
+ * @param {type}   var           Description.
+ * @param {type}   [var]         Description of optional variable.
+ * @param {type}   [var=default] Description of optional variable with default variable.
+ * @param {Object} objectVar     Description.
+ * @param {type}   objectVar.key Description of a key in the objectVar parameter.
+ *
+ * @return {type} Return value description.
+ */
+")
+      )
+  (if (string= choice "bash")
+      (insert "
+: '
+
+'
+")
+      )
+  (message choice)
+  choice)
 
 (winner-mode 1)
 
