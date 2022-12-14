@@ -6,4 +6,4 @@
 	  (setq js2-highlight-level 3)
 	  )
 
-(provide 'js2-zrg-setup)
+(provide 'js2-setup)

@@ -7,6 +7,44 @@
 ;; . Emacs Configuration file
 ;; . . . . . . . . . . . . . . . . . . . . .
 
+;; MELPA initialization
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents)
+  )
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package)
+  )
+
+;; Load .el files from the packages folder.
+(defvar packagesFolder (expand-file-name "packages" user-emacs-directory) "Global var for the packages folder")
+(add-to-list 'load-path packagesFolder)
+
+;; Use-package
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+;; List with all the packages that are loaded below.
+(defvar zrg/packages '(
+		      ;;"exwm"
+		       "js2"
+		       "evil"
+		       "doom-modeline"
+		       "lsp-ui"
+		       )
+  )
+
+(dolist (file zrg/packages)
+  (if (or (file-exists-p(concat packagesFolder "/" file "-setup.el" ))
+	  (file-exists-p(concat packagesFolder "/" file "-setup.elc"))
+	  )
+      (require (intern (concat file "-setup")))
+    (message (concat "Package " file "was removed"))
+    )
+  )
+
 (defvar org-todo-keywords
     '((sequence "CHECK(k!/!)" "FEATURE(f!/!)" "PROJECT(p!/!)" "TASK(t!/!)" "BUG(u!/!)" "HOLD(h!/!)" "|" "DONE(d!/!)" "CANCELLED(c!/!)")))
 (defvar org-todo-keyword-faces
@@ -19,11 +57,8 @@
 	("CANCELLED" .  "PaleGreen")))
 (setq org-fontify-done-headline t)
 
-(defvar zrg/pak-folder (expand-file-name "packages" user-emacs-directory) "Global var for the packages folder")
-(add-to-list 'load-path zrg/pak-folder)
-
-;;(require 'dired-x)
-(defun add-comment (choice)
+;; Add comments for different languages.
+(defun addComment (choice)
   "Add helpful comments for different languages, acording to CHOICE "
   (interactive
    (list (completing-read "Choose: "
@@ -60,22 +95,9 @@
 
 (winner-mode 1)
 
-(defvar dired-sort-map (make-sparse-keymap))
-
-;; (define-key dired-mode-map (kbd "C-c s") dired-sort-map)
-
-;; (define-key dired-sort-map "s" (lambda () "sort by Size" (interactive) (dired-sort-other (concat dired-listing-switches " -S"))))
-;; (define-key dired-sort-map "x" (lambda () "sort by eXtension" (interactive) (dired-sort-other (concat dired-listing-switches " -X"))))
-;; (define-key dired-sort-map "t" (lambda () "sort by Time" (interactive) (dired-sort-other (concat dired-listing-switches " -t"))))
-;; (define-key dired-sort-map "n" (lambda () "sort by Name" (interactive) (dired-sort-other dired-listing-switches)))
-;; (define-key dired-sort-map "?" (lambda () "sort help" (interactive) (message "s Size; x eXtension; t Time; n Name")))
-
-;; (provide 'dired-sort-map)
-
 ;; Startup
 
 (setq inhibit-startup-message t)
-
 (setq inhibit-default-init t)
 
 ;; active Babel languages
@@ -131,37 +153,6 @@
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
-;; MELPA initialization
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents)
-  )
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package)
-  )
-
-;; Use-package
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-;; List with all the packages that are loaded below.
-(defvar zrg/packages '(
-		       "js2"
-		       "evil"
-		       "doom-modeline"
-		       )
-  )
-
-(dolist (file zrg/packages)
-  (if (or (file-exists-p(concat zrg/pak-folder "/" file "-zrg-setup.el"))
-	  (file-exists-p(concat zrg/pak-folder "/" file "-zrg-setup.elc"))
-	  )
-      (require (intern (concat file "-zrg-setup")))
-    (message (concat "Package " file "was removed"))
-    )
-  )
 
 (use-package diminish
   :init
@@ -335,17 +326,6 @@
   :commands
   (lsp lsp-deferred)
   )
-
-(use-package lsp-ui
-  :hook
-  (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-flycheck-enable t)
-  (setq lsp-ui-sideline-show-flycheck t)
-  (setq lsp-ui-sideline-show-diagnostics t)
-  (setq lsp-ui-sideline-show-code-actions t)
-  )
-
 (use-package highlight-indent-guides
   :diminish
   :config

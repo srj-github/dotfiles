@@ -49,4 +49,4 @@
    ("M-D" . evil-multiedit-match-and-prev))
   )
 
-(provide 'evil-zrg-setup)
+(provide 'evil-setup)
