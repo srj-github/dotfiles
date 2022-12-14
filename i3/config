@@ -233,8 +233,6 @@ client.focused_inactive #555555 	#555555 	#ffffff 	#11f152 	#1a73f44
 gaps inner 10
 gaps outer 20
 
-workspace_auto_back_and_forth yes
-
 exec --no-startup-id picom
 
 # Bind Caps to CTRL
@@ -242,8 +240,8 @@ exec --no-startup-id /usr/bin/setxkbmap -option "ctrl:nocaps"
 bindsym $mod+b exec --no-startup-id setxkbmap -option "ctrl:nocaps"
 
 # Monitor setup
-set $laptop "eDP-1"
-set $external "HDMI-1"
+set $laptop "eDP"
+set $external "HDMI-A-0"
 
 workspace 10 output $laptop
 workspace 1 output $external
@@ -265,9 +263,6 @@ exec --no-startup-id blueman-applet
 
 exec --no-startup-id thunderbird
 exec --no-startup-id sleep 2; emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
-
-#bindsym $mod+p exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/display.sh
-#exec --no-startup-id /home/zrg/.dotfiles/i3/scripts/startup_set_display.sh
 
 # My bindings
 bindsym $mod+BackSpace exec --no-startup-id emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
