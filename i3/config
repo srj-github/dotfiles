@@ -262,10 +262,10 @@ exec --no-startup-id pasystray
 exec --no-startup-id blueman-applet
 
 exec --no-startup-id thunderbird
-exec --no-startup-id sleep 2; emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
+exec --no-startup-id sleep 2; emacsclient -c
 
 # My bindings
-bindsym $mod+BackSpace exec --no-startup-id emacsclient -c -e "$(cat /home/zrg/.dotfiles/emacs/emacsStart.el)"
+bindsym $mod+BackSpace exec --no-startup-id emacsclient -c
 bindsym $mod+z focus child
 
 # Make the currently focused window a scratchpad
