@@ -236,8 +236,8 @@ gaps outer 20
 exec --no-startup-id picom
 
 # Bind Caps to CTRL
-exec --no-startup-id /usr/bin/setxkbmap -option "ctrl:nocaps"
-bindsym $mod+b exec --no-startup-id setxkbmap -option "ctrl:nocaps"
+exec --no-startup-id /usr/bin/setxkbmap -option "ctrl:nocaps" && polychromatic-cli -e /home/zrg/.config/polychromatic/effects/vimstyle.json
+bindsym Scroll_Lock exec --no-startup-id setxkbmap -option "ctrl:nocaps" && polychromatic-cli -e /home/zrg/.config/polychromatic/effects/vimstyle.json
 
 # Monitor setup
 set $laptop "eDP"
