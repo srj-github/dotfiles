@@ -99,6 +99,7 @@
 
 (setq inhibit-startup-message t)
 (setq inhibit-default-init t)
+(setq-default truncate-lines t)
 
 ;; active Babel languages
 (org-babel-do-load-languages
@@ -201,6 +202,21 @@
   (("C-s" . swiper))
   )
 
+(defun dired-sort ()
+  "Sort dired dir listing in different ways.
+Prompt for a choice.
+URL `http://ergoemacs.org/emacs/dired_sort.html'
+Version 2015-07-30"
+  (interactive)
+  (let (-sort-by -arg)
+    (setq -sort-by (ido-completing-read "Sort by:" '( "date" "size" "name" "dir")))
+    (cond
+     ((equal -sort-by "name") (setq -arg "-Al --si --time-style long-iso "))
+     ((equal -sort-by "date") (setq -arg "-Al --si --time-style long-iso -t"))
+     ((equal -sort-by "size") (setq -arg "-Al --si --time-style long-iso -S"))
+     ((equal -sort-by "dir") (setq -arg "-Al --si --time-style long-iso --group-directories-first"))
+     (t (error "logic error 09535" )))
+    (dired-sort-other -arg )))
 
 (use-package dired
   :after evil
@@ -212,17 +228,85 @@
   (setq trash-directory "~/Trash")
   (setq dired-kill-when-opening-new-dired-buffer t)
   (setq global-auto-revert-non-file-buffers t)
+  (setq diredp-hide-details-initially-flag nil)
+
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'diredp-up-directory-reuse-dir-buffer
+    "l" 'diredp-find-file-reuse-dir-buffer
+    (kbd "<return>") 'dired-open-xdg
+    "s" 'dired-sort
+    )
   :commands
   (dired dired-jump)
   :bind
   (("C-x C-j" . dired-jump))
   :custom
-  ((dired-listing-switches "-agho --group-directories-first"))
+  (
+   (dired-use-ls-dired t)
+   (dired-listing-switches "-alh --group-directories-first")
+   )
+  )
+
+(require 'dired+)
+(diredp-toggle-find-file-reuse-dir 1)
+
+(use-package dired-rainbow
+  :after dired
   :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-up-directory
-    "l" 'dired-find-alternate-file
-    )
+  (defconst dired-audio-files-extensions
+    '("mp3" "MP3" "ogg" "OGG" "flac" "FLAC" "wav" "WAV")
+    "Dired Audio files extensions")
+  (dired-rainbow-define audio "#329EE8" dired-audio-files-extensions)
+
+  (defconst dired-video-files-extensions
+    '("vob" "VOB" "mkv" "MKV" "mpe" "mpg" "MPG" "mp4" "MP4" "ts" "TS" "m2ts"
+      "M2TS" "avi" "AVI" "mov" "MOV" "wmv" "asf" "m2v" "m4v" "mpeg" "MPEG" "tp")
+    "Dired Video files extensions")
+  (dired-rainbow-define video "#B3CCFF" dired-video-files-extensions)
+
+  (defconst dired-doc-files-extensions
+    '("txt" "TXT" "pdf" "PDF" "doc" "DOC" "xls" "XLS" "org" "ORG" "docx" "DOCX" "csv" "CSV"
+      "json" "JSON" "epub" "EPUB" "mobi" "MOBI"
+      )
+    "Dired Document files extensions")
+  (dired-rainbow-define document "#D8BFD8" dired-doc-files-extensions)
+
+  (defconst dired-exe-files-extensions
+    '("exe" "EXE" "sh" "SH" "bat" "BAT" "msi" "MSI"
+      )
+    "Dired Executable files extensions")
+  (dired-rainbow-define exe "#98FB98" dired-exe-files-extensions)
+
+  (defconst dired-code-files-extensions
+    '("js" "JS" "py" "PY" "c" "C" "h" "H" "php" "PHP" "xml" "XML"
+      )
+    "Dired Code files extensions")
+  (dired-rainbow-define code "#CF9FFF" dired-code-files-extensions)
+
+  (defconst dired-web-files-extensions
+    '("css" "CSS" "html" "HTML" "scss" "SCSS" "htm" "HTM"
+      )
+    "Dired Web files extensions")
+  (dired-rainbow-define web "#DA70D6" dired-web-files-extensions)
+
+  (defconst dired-image-files-extensions
+    '("jpg" "JPG" "jpeg" "JPEG" "bmp" "BMP" "tiff" "TIFF" "gif" "GIF" "webp" "WEBP" "png" "PNG" "svg" "SVG"
+      )
+    "Dired Image files extensions")
+  (dired-rainbow-define image "#4169E1" dired-image-files-extensions)
+
+  (defconst dired-arhive-files-extensions
+    '("7z" "7Z" "zip" "ZIP" "rar" "RAR" "tar" "TAR" "iso" "ISO" "bz2" "BZ2" "gz" "GZ" "lz" "LZ" "lz4" "LZ4" "lzma" "LZMA" "lzo" "LZO"
+      "z" "Z" "xz" "XZ" "zst" "ZST" "ace" "ACE" "arj" "ARJ" "cab" "CAB"
+      )
+    "Dired Arhive files extensions")
+  (dired-rainbow-define arhive "#E97451" dired-arhive-files-extensions)
+
+  (defconst dired-danger-files-extensions
+    '("pem" "PEM" "crt" "CRT" "service" "SERVICE" "conf" "CONF" "cfg" "CFG" "efi" "EFI" "rc" "RC"
+      )
+    "Dired Danger files extensions")
+  (dired-rainbow-define danger "#FF2400" dired-danger-files-extensions)
   )
 
 (use-package sudo-edit)
