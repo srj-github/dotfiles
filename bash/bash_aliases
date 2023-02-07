@@ -17,9 +17,8 @@ alias share='gio mount smb://192.168.0.254/share < ~/.private/gio'
 
 alias fs='du -hd1 | sort -h'
 
-alias ls='exa --git'
+alias lss='exa --git'
 alias tree='exa -T'
-alias lss='exa --sort=size -r -l' # sort by size - highest, up
 
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
