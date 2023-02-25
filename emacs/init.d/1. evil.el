@@ -19,7 +19,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-integration t)
   (setq evil-auto-balance-windows nil) ;; Don't resize windows when creating new ones.
-  :config 
+  :config
   (evil-mode 1)
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
@@ -48,5 +48,3 @@
    ("M-d" . evil-multiedit-match-and-next)
    ("M-D" . evil-multiedit-match-and-prev))
   )
-
-(provide 'evil-setup)
