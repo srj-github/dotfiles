@@ -10,3 +10,5 @@
 [alias]
 	s = status -s
 	l = log --oneline --all --graph
+[diff]
+	ignoreSubmodules = dirty
