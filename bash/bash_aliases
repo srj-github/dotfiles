@@ -6,7 +6,11 @@
 # . bash_aliases for .bashrc
 # . . . . . . . . . . . . . . . . . . . . .
 
-alias ls='ls --color=auto'
+
+#alias ls='ls --color=auto'
+alias ls='exa --git -g'
+alias tree='exa -T'
+
 alias sudo='sudo '
 
 alias shutdown='shutdown -h now'
@@ -17,8 +21,6 @@ alias share='gio mount smb://192.168.0.254/share < ~/.private/gio'
 
 alias fs='du -hd1 | sort -h'
 
-alias lss='exa --git'
-alias tree='exa -T'
 
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 

@@ -35,11 +35,16 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+#set $refresh_i3status killall -SIGUSR1 i3status
+#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Media keyboard control with alsamixer
+bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 1+ unmute"
+bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 1- unmute"
+bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
 
 # Birghtness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
@@ -196,7 +201,7 @@ bar {
     position top
     status_command i3blocks
 
-    tray_output $external
+    tray_output $philips
     tray_output $laptop
     font pango: DejaVu Sans Mono Nerd Font 10
  
@@ -216,9 +221,6 @@ bar {
     }
 }
  
-# Wallpaper settings
-exec_always --no-startup-id feh --bg-fill  --randomize /home/zrg/wallpapers/3440x1440
-
 # You can also use any non-zero value if you'd like to have a border
 for_window [class=".*"] border normal 2
 for_window [all] title_window_icon on
@@ -234,35 +236,43 @@ gaps inner 10
 gaps outer 20
 
 exec --no-startup-id picom
+exec --no-startup-id autorandr -c
+exec --no-startup-id xrandr --dpi 96
+
+# Wallpaper settings
+exec_always --no-startup-id sleep 5; feh --bg-fill  --randomize /home/zrg/wallpapers/3440x1440
 
 # Bind Caps to CTRL
 exec --no-startup-id /usr/bin/setxkbmap -option "ctrl:nocaps" && polychromatic-cli -e /home/zrg/.config/polychromatic/effects/vimstyle.json
 bindsym Scroll_Lock exec --no-startup-id setxkbmap -option "ctrl:nocaps" && polychromatic-cli -e /home/zrg/.config/polychromatic/effects/vimstyle.json
 
 # Monitor setup
-set $laptop "eDP"
-set $external "HDMI-A-0"
+set $laptop "eDP-1-1"
+set $predator "HDMI-1-2"
+set $philips "DP-1-1"
 
 workspace 10 output $laptop
-workspace 1 output $external
-workspace 2 output $external
-workspace 3 output $external
-workspace 4 output $external
-workspace 5 output $external
-workspace 6 output $external
-workspace 7 output $external
-workspace 8 output $external
-workspace 9 output $external
+workspace 1 output $philips
+workspace 2 output $predator
+workspace 3 output $philips
+workspace 4 output $philips
+workspace 5 output $philips
+workspace 6 output $philips
+workspace 7 output $philips
+workspace 8 output $philips
+workspace 9 output $philips
 
 exec --no-startup-id kitty bashtop
+exec --no-startup-id '/home/zrg/bin/Creasoft/Creasoft.exe'
 assign [class="kitty"] 10
+assign [class="creasoft.exe"] 9
 
 exec --no-startup-id flameshot
 exec --no-startup-id pasystray
 exec --no-startup-id blueman-applet
 
 exec --no-startup-id thunderbird
-exec --no-startup-id sleep 2; emacsclient -c
+exec --no-startup-id sleep 2; emacs --daemon
 
 # My bindings
 bindsym $mod+BackSpace exec --no-startup-id emacsclient -c
