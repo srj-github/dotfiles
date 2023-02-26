@@ -65,3 +65,6 @@ fi
 # Bind Ctrl to Caps
 
 #setxkbmap -layout us -option ctrl:nocaps
+
+# Ble.sh
+source ~/.local/share/blesh/ble.sh
