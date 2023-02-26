@@ -1,0 +1,65 @@
+! special
+URxvt.foreground: #93a1a1
+URxvt.background: #141c21
+URxvt.cursorColor: #afbfbf
+
+! black
+URxvt.color0: #263640
+URxvt.color8: #4a697d
+
+! red
+URxvt.color1: #d12f2c
+URxvt.color9: #fa3935
+
+! green
+URxvt.color2: #819400
+URxvt.color10: #a4bd00
+
+! yellow
+URxvt.color3: #b08500
+URxvt.color11: #d9a400
+
+! blue
+URxvt.color4: #2587cc
+URxvt.color12: #2ca2f5
+
+! magenta
+URxvt.color5: #696ebf
+URxvt.color13: #8086e8
+
+! cyan
+URxvt.color6: #289c93
+URxvt.color14: #33c5ba
+
+! white
+URxvt.color7: #bfbaac
+URxvt.color15: #fdf6e3
+
+URxvt.font: xft:Hack:size=9
+URxvt.boldFont: xft:Hack:size=9
+URxvt.italicFont: xft:Hack:size=9
+URxvt.boldItalicfont: xft:Hack:sizek
+URxvt.letterSpace: 0
+URxvt.lineSpace: 0
+URxvt.geometry: 92x24
+URxvt.internalBorder: 24
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: false
+URxvt.saveline: 2048
+URxvt.scrollBar: false
+URxvt.scrollBar_right: false
+URxvt.urgentOnBell: true
+URxvt.depth: 24
+URxvt.iso14755: false
+
+
+URxvt.perl-lib: /home/zrg/.dotfiles/URxvt/perls
+
+URxvt.perl-ext-common: keyboard-select,matcher
+
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keyboard-select.clipboard: true
+
+URxvt.url-launcher:       firefox
+URxvt.matcher.button:     1
+URxvt.matcher.pattern.1:  \\bwww\\.[\\w-]+\\.[\\w./?&@#-]*[\\w/-]
