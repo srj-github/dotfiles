@@ -13,7 +13,6 @@ alias tree='exa -T'
 
 alias sudo='sudo '
 
-alias shutdown='shutdown -h now'
 alias restart='shutdown -r now'
 
 alias vpn='sudo openvpn --config ~/.private/vpn.ovpn --auth-user-pass ~/.private/vpnPass'
@@ -21,12 +20,11 @@ alias share='gio mount smb://192.168.0.254/share < ~/.private/gio'
 
 alias fs='du -hd1 | sort -h'
 
-
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
 alias lamp=' sudo docker run -i -t -p "80:80" -v ${PWD}/app:/app -v ${PWD}/mysql:/var/lib/mysql mattrayner/lamp:latest'
 
-alias e='emacsclient'
+alias e='emacsclient -n -c'
 alias wake='wol 50:EB:F6:3C:66:35'
 
 git-diff() {

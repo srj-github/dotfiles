@@ -34,9 +34,11 @@
 (setq org-priority-default 1)
 
 (use-package visual-fill-column
+  :ensure t
   :hook (org-mode . org-mode-visual-fill))
 
 (use-package org-superstar
+  :ensure t
   ;; requires fontawesome font
   :after org
   :hook (org-mode . org-superstar-mode)

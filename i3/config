@@ -36,15 +36,15 @@ exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 #set $refresh_i3status killall -SIGUSR1 i3status
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Media keyboard control with alsamixer
-bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 1+ unmute"
-bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 1- unmute"
-bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
+#bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 1+ unmute"
+#bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 1- unmute"
+#bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
 
 # Birghtness controls
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
@@ -222,8 +222,7 @@ bar {
 }
  
 # You can also use any non-zero value if you'd like to have a border
-for_window [class=".*"] border normal 2
-for_window [all] title_window_icon on
+default_border pixel 0
 
 # Colours
 
@@ -263,16 +262,15 @@ workspace 8 output $philips
 workspace 9 output $philips
 
 exec --no-startup-id kitty bashtop
-exec --no-startup-id '/home/zrg/bin/Creasoft/Creasoft.exe'
 assign [class="kitty"] 10
-assign [class="creasoft.exe"] 9
 
 exec --no-startup-id flameshot
 exec --no-startup-id pasystray
 exec --no-startup-id blueman-applet
 
-exec --no-startup-id thunderbird
+exec --no-startup-id sleep 5; i3-msg workspace 9; exec thunderbird
 exec --no-startup-id sleep 2; emacs --daemon
+exec --no-startup-id sleep 10; i3-msg workspace 10; exec emacsclient -c
 
 # My bindings
 bindsym $mod+BackSpace exec --no-startup-id emacsclient -c
@@ -288,5 +286,5 @@ bindsym $mod+minus scratchpad show
 exec --no-startup-id sleep 1; i3-msg workspace 1
 
 # Move thunderbird in the scratchpad, but only the main window. MsgCompose should be a normal floating window.
-for_window [window_role="Msgcompose" class="thunderbird"] floating enable
-for_window [window_role="3pane" class="thunderbird"] move scratchpad
+#for_window [window_role="Msgcompose" class="thunderbird"] floating enable
+#for_window [window_role="3pane" class="thunderbird"] move scratchpad

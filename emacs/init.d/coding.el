@@ -76,7 +76,7 @@
   :ensure t
   :config (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
           (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-mode))
-          (add-to-list 'auto-mode-alist '("\\.ts\\'" . typesript-ts-mode))
+          (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
           (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-ts-mode))
           (setq js2-include-node-externs t)
 	  (setq js-indent-level 2)
@@ -122,3 +122,5 @@
       )
   (message choice)
   choice)
+
+

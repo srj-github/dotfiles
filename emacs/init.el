@@ -23,6 +23,13 @@
        ((and (eq isdir nil) (string= (substring path -3) ".el"))
         (load (file-name-sans-extension fullpath)))))))
 
+;; Load Agenda at startup
+(defun emacs-startup-screen ()
+  "Display the weekly org-agenda and all todos."
+  (org-agenda nil "n"))
+(add-hook 'emacs-startup-hook #'emacs-startup-screen)
+(setq initial-buffer-choice (lambda () (get-buffer-create "*Org Agenda*")))
+
 ;; Disable lockfiles
 (setq create-lockfiles nil)
 
