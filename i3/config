@@ -252,7 +252,7 @@ set $philips "DP-1-1"
 
 workspace 10 output $laptop
 workspace 1 output $philips
-workspace 2 output $predator
+workspace 2 output $philips
 workspace 3 output $philips
 workspace 4 output $philips
 workspace 5 output $philips
