@@ -6,8 +6,13 @@
 # . bash_aliases for .bashrc
 # . . . . . . . . . . . . . . . . . . . . .
 
-alias ls='eza --git -g'
-alias tree='eza -T'
+if command -v exa &> /dev/null; then
+    alias ls='exa --git -g'
+    alias tree='exa -T'
+elif command -v eza &> /dev/null; then
+    alias ls='eza --git -g'
+    alias tree='eza -T'
+fi
 
 alias sudo='sudo '
 
