@@ -13,6 +13,7 @@
   )
 
 (use-package evil
+  :ensure t
   :bind
   ([remap evil-paste-pop] . counsel-yank-pop)
   :init
