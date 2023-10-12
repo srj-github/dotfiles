@@ -23,3 +23,5 @@ alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 alias wake='wol 50:EB:F6:3C:66:35'
 
 alias foldersizes='du -sh -- * .*'
+
+alias startLemp='sudo systemctl start nginx && sudo systemctl start php-fpm && sudo systemctl start mariadb'
