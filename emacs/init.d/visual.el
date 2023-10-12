@@ -12,7 +12,6 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'prog-mode-hook 'column-number-mode)
 
-(set-fringe-mode 10) ;; Margins
 (setq visible-bell t)
 (set-face-attribute 'default nil :font "Envy Code R")
 
