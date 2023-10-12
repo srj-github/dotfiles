@@ -10,3 +10,9 @@
 [submodule "00_assets/liquidprompt"]
 	path = 00_assets/liquidprompt
 	url = https://github.com/nojhan/liquidprompt.git
+[submodule "00_assets/eza"]
+	path = 00_assets/eza
+	url = https://github.com/eza-community/eza
+[submodule "00_assets/ble.sh"]
+	path = 00_assets/ble.sh
+	url = https://github.com/akinomyoga/ble.sh
