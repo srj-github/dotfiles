@@ -3,9 +3,10 @@
 (setq inhibit-default-init t)
 
 ;; Disable bars
-(scroll-bar-mode -1) 
 (tool-bar-mode -1) 
 (menu-bar-mode -1) 
+(if (eq window-system 'x)
+(scroll-bar-mode -1))
 
 ;; Display line-numbers
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
