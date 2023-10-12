@@ -21,3 +21,5 @@ alias fs='du -hd1 | sort -h'
 alias card='glxinfo|egrep "OpenGL vendor|OpenGL renderer"'
 
 alias wake='wol 50:EB:F6:3C:66:35'
+
+alias foldersizes='du -sh -- * .*'
