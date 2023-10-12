@@ -6,8 +6,8 @@
 # . bash_aliases for .bashrc
 # . . . . . . . . . . . . . . . . . . . . .
 
-alias ls='exa --git -g'
-alias tree='exa -T'
+alias ls='eza --git -g'
+alias tree='eza -T'
 
 alias sudo='sudo '
 
